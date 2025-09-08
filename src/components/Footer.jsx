@@ -29,7 +29,7 @@ export default function Footer() {
             color: "black",
           },
           "& .Mui-selected, & .Mui-selected .MuiSvgIcon-root": {
-            color: "orange",
+            color: "warning.main",
           },
         }}
       >
