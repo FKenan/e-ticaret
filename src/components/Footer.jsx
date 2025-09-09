@@ -15,7 +15,15 @@ export default function Footer() {
 
   return (
     <Box
-      sx={{ width: "100%", position: "fixed", bottom: 0, left: 0, right: 0 }}
+      sx={{
+        width: "100%",
+        position: "fixed",
+        bottom: 0,
+        left: "50%",
+        transform: "translateX(-50%)",
+        maxWidth: "lg",
+        zIndex: 1000,
+      }}
     >
       <Divider />
       <BottomNavigation

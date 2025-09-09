@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ThemeRegistry from "@/components/ThemeRegistry";
+import { Container } from "@mui/material";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,11 +24,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="tr">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ThemeRegistry>
-          <Navbar />
-          {children}
-          <Footer />
-        </ThemeRegistry>
+        <Container maxWidth="lg">
+          <ThemeRegistry>
+            <Navbar />
+            {children}
+            <Footer />
+          </ThemeRegistry>
+        </Container>
       </body>
     </html>
   );
