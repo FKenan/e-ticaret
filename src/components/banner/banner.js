@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Typography, Button, Grid } from "@mui/material";
-import BannerCarousel from "./BannerCarousel";
+import BannerCarousel from "./bannerCarousel";
 
 const Banner = () => {
   return (

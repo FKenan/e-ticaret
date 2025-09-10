@@ -1,5 +1,5 @@
 import { Container, Grid, Typography } from "@mui/material";
-import Product from "./Product";
+import ProductCard from "./productCard";
 
 export default function FeaturedProducts() {
   const Products = [
@@ -47,7 +47,7 @@ export default function FeaturedProducts() {
       </Typography>
       <Grid container spacing={6}>
         {Products.map((product) => (
-          <Product key={product.id} product={product} />
+          <ProductCard key={product.id} product={product} />
         ))}
       </Grid>
     </Container>

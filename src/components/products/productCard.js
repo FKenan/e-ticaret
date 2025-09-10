@@ -7,7 +7,7 @@ import {
   Box,
 } from "@mui/material";
 
-export default function Product({ product }) {
+export default function ProductCard({ product }) {
   return (
     <Grid size={{ sm: 12, md: 6, lg: 4 }}>
       <Box
