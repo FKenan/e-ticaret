@@ -37,7 +37,7 @@ export default function CategoryCard({ category }) {
                 loading="lazy"
                 sx={{ objectFit: "contain" }}
               />
-              <CardContent sx={{ backgroundColor: "#f5f5f5" }}>
+              <CardContent sx={{ backgroundColor: "warning.light" }}>
                 <Typography
                   gutterBottom
                   variant="h6"
