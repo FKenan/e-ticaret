@@ -35,16 +35,7 @@ axios.interceptors.response.use(
         toast.error(data.message);
         break;
       case 403: // Yasak (Forbidden)
-        if (data.errors) {
-          const errors = [];
-
-          for (const key in data.errors) {
-            errors.push(data.errors[key]);
-          }
-
-          let result = { errors: errors, message: data.message };
-          throw result;
-        }
+        toast.error(data.message);
         break;
       case 404: // Bulunamadı (Not Found)
         break;
@@ -92,4 +83,4 @@ const orders = {
   createOrder: (formData) => methods.post("orders", formData),
 };
 
-export { methods, errors, products, cart, account, orders };
+export { methods, products, cart, account, orders };

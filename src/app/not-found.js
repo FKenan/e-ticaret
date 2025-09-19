@@ -31,9 +31,8 @@ export default function NotFound() {
       <StyledTypography variant="h4" component="h2" gutterBottom>
         Sayfa Bulunamadı
       </StyledTypography>
-      <StyledTypography variant="body1" paragraph>
-        Aradığınız sayfa mevcut değil veya taşınmış olabilir. Lütfen URL'yi
-        kontrol edin veya ana sayfaya geri dönün.
+      <StyledTypography variant="body1">
+        Üzgünüz, aradığınız sayfa mevcut değil veya taşınmış olabilir.
       </StyledTypography>
       <StyledButton
         variant="contained"

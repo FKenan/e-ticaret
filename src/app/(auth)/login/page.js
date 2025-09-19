@@ -97,7 +97,7 @@ const LoginPage = () => {
               color: "black",
             }}
           >
-            Don't have an account? Sign Up
+            {"Don't have an account? Sign Up"}
           </Link>
         </Box>
       </Box>
