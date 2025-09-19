@@ -11,6 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import styled from "@emotion/styled";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined"; // Added for wishlist
 import Link from "next/link";
 
 export default function Navbar() {
@@ -110,6 +111,14 @@ export default function Navbar() {
               ml: { xs: 0, sm: 3 },
             }}
           >
+            <IconButton
+              component={Link}
+              href="/profile/wishlist"
+              size="large"
+              color="inherit"
+            >
+              <FavoriteBorderOutlinedIcon />
+            </IconButton>
             <IconButton
               component={Link}
               href="/login"

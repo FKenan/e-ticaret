@@ -6,10 +6,28 @@ import {
   Typography,
   Button,
   Box,
+  IconButton,
 } from "@mui/material";
 import Link from "next/link";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWishlist } from "../../store/slices/wishlistSlice";
 
 export default function ProductCard({ product }) {
+  const dispatch = useDispatch();
+  const wishlistItems = useSelector((state) => state.wishlist.items);
+  const isInWishlist = wishlistItems.some((item) => item.id === product.id);
+
+  const handleAddToWishlist = (e) => {
+    e.preventDefault(); // Prevent navigation
+    e.stopPropagation(); // Stop event propagation to parent Link
+    if (!isInWishlist) {
+      dispatch(addToWishlist(product));
+      // Optionally, show a toast notification
+    }
+  };
+
   return (
     <Grid size={{ sm: 12, md: 6, lg: 4 }}>
       <Link
@@ -45,16 +63,38 @@ export default function ProductCard({ product }) {
               textAlign: "left",
               width: "100%",
               height: "100%",
+              position: "relative",
             }}
           >
-            <Typography
-              gutterBottom
-              variant="h6"
-              component="div"
-              fontWeight="bold"
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
             >
-              {product.name}
-            </Typography>
+              <Typography
+                gutterBottom
+                variant="h6"
+                component="div"
+                fontWeight="bold"
+                sx={{ flexGrow: 1 }}
+              >
+                {product.name}
+              </Typography>
+              <IconButton
+                aria-label="add to wishlist"
+                size="small"
+                onClick={handleAddToWishlist}
+                color={isInWishlist ? "error" : "default"}
+              >
+                {isInWishlist ? (
+                  <FavoriteIcon />
+                ) : (
+                  <FavoriteBorderOutlinedIcon />
+                )}
+              </IconButton>
+            </Box>
             <Box>
               <Typography
                 variant="h5"

@@ -83,4 +83,10 @@ const orders = {
   createOrder: (formData) => methods.post("orders", formData),
 };
 
-export { methods, products, cart, account, orders };
+const wishlist = {
+  get: () => methods.get("wishlist"),
+  addItem: (productId) => methods.post(`wishlist?productId=${productId}`, {}),
+  removeItem: (productId) => methods.delete(`wishlist?productId=${productId}`),
+};
+
+export { methods, products, cart, account, orders, wishlist };
