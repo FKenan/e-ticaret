@@ -110,7 +110,12 @@ export default function Navbar() {
               ml: { xs: 0, sm: 3 },
             }}
           >
-            <IconButton size="large" color="inherit">
+            <IconButton
+              component={Link}
+              href="/login"
+              size="large"
+              color="inherit"
+            >
               <Person2OutlinedIcon />
             </IconButton>
           </Box>
