@@ -1,9 +1,9 @@
 import "./globals.css";
 import Container from "@mui/material/Container";
 import { ReduxProvider } from "@/store/provider";
+import Footer from "@/components/layout/footer";
+import Navbar from "@/components/layout/navbar";
 import ThemeRegistry from "@/components/themeRegistry";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
 
 export const metadata = {
   title: "Create Next App",
