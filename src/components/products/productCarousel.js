@@ -9,6 +9,7 @@ export default function ProductCarousel({ items }) {
       showArrows={true}
       infiniteLoop={true}
       autoPlay={true}
+      showThumbs={false}
       interval={5000}
     >
       {items.map((item, i) => (
