@@ -49,6 +49,7 @@ const RegisterPage = () => {
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
+            margin="normal"
             required
             fullWidth
             id="name"
@@ -69,6 +70,7 @@ const RegisterPage = () => {
             }}
           />
           <TextField
+            margin="normal"
             required
             fullWidth
             id="email"
@@ -88,6 +90,7 @@ const RegisterPage = () => {
             }}
           />
           <TextField
+            margin="normal"
             required
             fullWidth
             name="password"
@@ -108,6 +111,7 @@ const RegisterPage = () => {
             }}
           />
           <TextField
+            margin="normal"
             required
             fullWidth
             name="confirmPassword"
@@ -149,7 +153,7 @@ const RegisterPage = () => {
               color: "black",
             }}
           >
-            Already have an account? Sign In
+            Already have an account? Log In
           </Link>
         </Box>
       </Box>

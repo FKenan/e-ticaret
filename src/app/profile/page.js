@@ -71,7 +71,7 @@ export default function ProfilePage() {
           <Card variant="outlined">
             <CardActionArea
               component={Link}
-              href="/addresses"
+              href="/profile/addresses"
               sx={{ p: 2, textAlign: "center" }}
             >
               <LocationOn sx={{ fontSize: 40 }} />

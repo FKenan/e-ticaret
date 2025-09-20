@@ -1,9 +1,9 @@
 import "./globals.css";
 import Container from "@mui/material/Container";
+import { ReduxProvider } from "@/store/provider";
 import ThemeRegistry from "@/components/themeRegistry";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { ReduxProvider } from "@/store/provider";
 
 export const metadata = {
   title: "Create Next App",
@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="tr">
       <body>
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{ mb: 6 }}>
           <ThemeRegistry>
             <ReduxProvider>
               <Navbar />
