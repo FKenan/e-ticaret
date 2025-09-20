@@ -1,6 +1,7 @@
 import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
-import Carousel from "react-material-ui-carousel";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 export default function BannerCarousel() {
   const items = [
@@ -22,9 +23,14 @@ export default function BannerCarousel() {
   ];
 
   return (
-    <Carousel>
+    <Carousel
+      showArrows={true}
+      infiniteLoop={true}
+      autoPlay={true}
+      interval={5000}
+    >
       {items.map((item, i) => (
-        <Paper key={i} elevation={0} sx={{ height: "400px", p: 3 }}>
+        <Paper key={i} elevation={0} sx={{ height: "400px" }}>
           <Box
             sx={{
               width: "100%",

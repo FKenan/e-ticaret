@@ -5,7 +5,7 @@ import BannerCarousel from "./bannerCarousel";
 
 const Banner = () => {
   return (
-    <Grid container sx={{ height: "400px" }}>
+    <Grid container spacing={2} sx={{ my: 4, alignItems: "center" }}>
       <Grid
         size={{ xs: 12, md: 6 }}
         sx={{
@@ -27,10 +27,7 @@ const Banner = () => {
           Alışverişe Başla
         </Button>
       </Grid>
-      <Grid
-        size={{ xs: 0, md: 6 }}
-        sx={{ display: { xs: "none", md: "block" } }}
-      >
+      <Grid size={{ xs: 12, md: 6 }}>
         <BannerCarousel />
       </Grid>
     </Grid>

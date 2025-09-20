@@ -9,12 +9,14 @@ import {
   Card,
   Divider,
   Button,
+  CardActionArea,
 } from "@mui/material";
 import { logout } from "../../store/slices/userSlice";
 import ShoppingBag from "@mui/icons-material/ShoppingBag";
 import Favorite from "@mui/icons-material/Favorite";
 import LocationOn from "@mui/icons-material/LocationOn";
 import Payment from "@mui/icons-material/Payment";
+import Link from "next/link";
 
 export default function ProfilePage() {
   const { userInfo } = useSelector((state) => state.user);
@@ -42,27 +44,51 @@ export default function ProfilePage() {
       </Box>
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Card variant="outlined" sx={{ p: 2, textAlign: "center" }}>
-            <ShoppingBag sx={{ fontSize: 40 }} />
-            <Typography variant="h6">My Orders</Typography>
+          <Card variant="outlined">
+            <CardActionArea
+              component={Link}
+              href="/orders"
+              sx={{ p: 2, textAlign: "center" }}
+            >
+              <ShoppingBag sx={{ fontSize: 40 }} />
+              <Typography variant="h6">Orders</Typography>
+            </CardActionArea>
           </Card>
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Card variant="outlined" sx={{ p: 2, textAlign: "center" }}>
-            <Favorite sx={{ fontSize: 40 }} />
-            <Typography variant="h6">Wishlist</Typography>
+          <Card variant="outlined">
+            <CardActionArea
+              component={Link}
+              href="/profile/wishlist"
+              sx={{ p: 2, textAlign: "center" }}
+            >
+              <Favorite sx={{ fontSize: 40 }} />
+              <Typography variant="h6">Wishlist</Typography>
+            </CardActionArea>
           </Card>
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Card variant="outlined" sx={{ p: 2, textAlign: "center" }}>
-            <LocationOn sx={{ fontSize: 40 }} />
-            <Typography variant="h6">Addresses</Typography>
+          <Card variant="outlined">
+            <CardActionArea
+              component={Link}
+              href="/addresses"
+              sx={{ p: 2, textAlign: "center" }}
+            >
+              <LocationOn sx={{ fontSize: 40 }} />
+              <Typography variant="h6">Addresses</Typography>
+            </CardActionArea>
           </Card>
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Card variant="outlined" sx={{ p: 2, textAlign: "center" }}>
-            <Payment sx={{ fontSize: 40 }} />
-            <Typography variant="h6">Payment Methods</Typography>
+          <Card variant="outlined">
+            <CardActionArea
+              component={Link}
+              href="/payment-methods"
+              sx={{ p: 2, textAlign: "center" }}
+            >
+              <Payment sx={{ fontSize: 40 }} />
+              <Typography variant="h6">Payment Methods</Typography>
+            </CardActionArea>
           </Card>
         </Grid>
       </Grid>

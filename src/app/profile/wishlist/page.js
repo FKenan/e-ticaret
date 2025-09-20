@@ -54,6 +54,6 @@ const WishlistPage = () => {
       )}
     </Box>
   );
-};  
+};
 
 export default WishlistPage;
