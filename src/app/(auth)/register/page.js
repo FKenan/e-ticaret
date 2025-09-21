@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 import {
   Container,
   Box,
@@ -8,34 +10,64 @@ import {
   Typography,
   Link,
   InputAdornment,
+  CircularProgress,
+  Alert,
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
+import { registerUser } from "@/store/slices/userSlice";
 
-const RegisterPage = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+export default function LoginPage() {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [errors, setErrors] = useState({});
+
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { loading, error: reduxError } = useSelector((state) => state.user);
+
+  const validate = () => {
+    let tempErrors = {};
+    if (!formData.email) {
+      tempErrors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      tempErrors.email = "Email is not valid.";
+    }
+    if (formData.password !== formData.confirmPassword) {
+      tempErrors.confirmPassword = "Passwords do not match.";
+    }
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
+    if (validate()) {
+      const { firstName, lastName, email, password } = formData;
+      const result = await dispatch(
+        registerUser({ firstName, lastName, email, password })
+      );
+      if (registerUser.fulfilled.match(result)) {
+        router.push("/login");
+      }
     }
-    setError("");
-    // Handle registration logic here
-    console.log("Registering with:", { name, email, password });
   };
 
   return (
     <Container maxWidth="xs">
       <Box
         sx={{
-          my: 10,
+          my: 5,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -48,27 +80,53 @@ const RegisterPage = () => {
           Create your account
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="name"
-            label="Name"
-            name="name"
-            autoComplete="name"
-            autoFocus
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            slotProps={{
-              input: {
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <PersonIcon />
-                  </InputAdornment>
-                ),
-              },
-            }}
-          />
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="firstName"
+              label="First Name"
+              name="firstName"
+              autoComplete="given-name"
+              autoFocus
+              value={formData.firstName}
+              onChange={handleChange}
+              error={!!errors.firstName}
+              helperText={errors.firstName}
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <PersonIcon />
+                    </InputAdornment>
+                  ),
+                },
+              }}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="lastName"
+              label="Last Name"
+              name="lastName"
+              autoComplete="family-name"
+              value={formData.lastName}
+              onChange={handleChange}
+              error={!!errors.lastName}
+              helperText={errors.lastName}
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <PersonIcon />
+                    </InputAdornment>
+                  ),
+                },
+              }}
+            />
+          </Box>
           <TextField
             margin="normal"
             required
@@ -77,8 +135,10 @@ const RegisterPage = () => {
             label="Email Address"
             name="email"
             autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={handleChange}
+            error={!!errors.email}
+            helperText={errors.email}
             slotProps={{
               input: {
                 endAdornment: (
@@ -98,8 +158,10 @@ const RegisterPage = () => {
             type="password"
             id="password"
             autoComplete="new-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={handleChange}
+            error={!!errors.password}
+            helperText={errors.password}
             slotProps={{
               input: {
                 endAdornment: (
@@ -119,8 +181,10 @@ const RegisterPage = () => {
             type="password"
             id="confirmPassword"
             autoComplete="new-password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword}
             slotProps={{
               input: {
                 endAdornment: (
@@ -131,10 +195,10 @@ const RegisterPage = () => {
               },
             }}
           />
-          {error && (
-            <Typography color="error" sx={{ mt: 2 }}>
-              {error}
-            </Typography>
+          {reduxError && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {reduxError.message || "An error occurred during registration."}
+            </Alert>
           )}
           <Button
             type="submit"
@@ -142,15 +206,19 @@ const RegisterPage = () => {
             variant="contained"
             size="large"
             color="warning"
-            sx={{ mt: 3, mb: 2, py: 2, borderRadius: "16px" }}
+            sx={{ mt: 3, mb: 2, py: 1.5, borderRadius: "16px" }}
+            disabled={loading}
           >
-            Sign Up
+            {loading ? <CircularProgress size={24} /> : "Sign Up"}
           </Button>
           <Link
             href="/login"
             underline="none"
             sx={{
               color: "black",
+              my: 2,
+              display: "block",
+              textAlign: "center",
             }}
           >
             Already have an account? Log In
@@ -159,6 +227,4 @@ const RegisterPage = () => {
       </Box>
     </Container>
   );
-};
-
-export default RegisterPage;
+}

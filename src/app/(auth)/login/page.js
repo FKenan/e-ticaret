@@ -12,7 +12,7 @@ import {
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
 
-const LoginPage = () => {
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -25,7 +25,7 @@ const LoginPage = () => {
     <Container maxWidth="xs">
       <Box
         sx={{
-          marginTop: 8,
+          my: 5,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -86,7 +86,7 @@ const LoginPage = () => {
             variant="contained"
             size="large"
             color="warning"
-            sx={{ mt: 3, mb: 2, py: 2, borderRadius: "16px" }}
+            sx={{ mt: 3, mb: 2, py: 1.5, borderRadius: "16px" }}
           >
             Login
           </Button>
@@ -95,6 +95,7 @@ const LoginPage = () => {
             underline="none"
             sx={{
               color: "black",
+              mt: 2,
             }}
           >
             {"Don't have an account? Sign Up"}
@@ -103,6 +104,4 @@ const LoginPage = () => {
       </Box>
     </Container>
   );
-};
-
-export default LoginPage;
+}

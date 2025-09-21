@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="tr">
       <body>
-        <Container maxWidth="lg" sx={{ mb: 6 }}>
+        <Container maxWidth="lg" sx={{ mb: 10 }}>
           <ThemeRegistry>
             <ReduxProvider>
               <Navbar />
