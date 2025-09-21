@@ -63,6 +63,10 @@ const products = {
   byCategory: (categoryId) => methods.get(`products/by-category/${categoryId}`),
 };
 
+const categories = {
+  all: () => methods.get("categories"),
+};
+
 const cart = {
   get: () => methods.get("carts"),
   addItem: (productId, quantity = 1) =>
@@ -95,6 +99,7 @@ const requests = {
   cart,
   account,
   orders,
+  categories,
 };
 
 export default requests;

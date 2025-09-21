@@ -1,8 +1,13 @@
-import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  createSelector,
+} from "@reduxjs/toolkit";
 import requests from "../../api/apiClient";
 
 const initialState = {
   products: [],
+  productsByCategory: [],
   selectedProduct: null,
   loading: false,
   error: null,
@@ -85,7 +90,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchProductByCategory.fulfilled, (state, action) => {
         state.loading = false;
-        state.selectedProduct = action.payload;
+        state.productsByCategory = action.payload;
       })
       .addCase(fetchProductByCategory.rejected, (state, action) => {
         state.loading = false;
@@ -114,8 +119,12 @@ export const selectProductLoading = createSelector(
   (productsState) => productsState.loading
 );
 
+export const selectProductsByCategory = createSelector(
+  [selectProductsState],
+  (productsState) => productsState.productsByCategory
+);
+
 export const selectProductError = createSelector(
   [selectProductsState],
   (productsState) => productsState.error
 );
-
