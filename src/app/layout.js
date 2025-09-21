@@ -1,9 +1,11 @@
 import "./globals.css";
+import "react-toastify/dist/ReactToastify.css";
 import Container from "@mui/material/Container";
 import { ReduxProvider } from "@/store/provider";
 import Footer from "@/components/layout/footer";
 import Navbar from "@/components/layout/navbar";
 import ThemeRegistry from "@/components/themeRegistry";
+import { ToastContainer } from "react-toastify";
 
 export const metadata = {
   title: "Create Next App",
@@ -20,6 +22,7 @@ export default function RootLayout({ children }) {
               <Navbar />
               {children}
               <Footer />
+              <ToastContainer />
             </ReduxProvider>
           </ThemeRegistry>
         </Container>

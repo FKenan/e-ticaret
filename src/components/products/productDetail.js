@@ -1,0 +1,118 @@
+"use client";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import ProductCarousel from "./productCarousel";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchProductById,
+  selectProductLoading,
+  selectSelectedProduct,
+} from "@/store/slices/productSlice";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { useEffect, useState } from "react";
+
+export default function ProductDetail({ id }) {
+  const dispatch = useDispatch();
+  const selectedProduct = useSelector(selectSelectedProduct);
+  const loading = useSelector(selectProductLoading);
+  const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    dispatch(fetchProductById(id));
+  }, [dispatch, id]);
+
+  const handleQuantityChange = (amount) => {
+    setQuantity((prev) => Math.max(1, prev + amount));
+  };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (!selectedProduct) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
+        }}
+      >
+        <Typography variant="h6">Product not found</Typography>
+      </Box>
+    );
+  }
+
+  return (
+    <Grid container spacing={4}>
+      <Grid size={{ xs: 12, md: 6 }}>
+        <ProductCarousel items={selectedProduct.productImages} />
+      </Grid>
+      <Grid size={{ xs: 12, md: 6 }}>
+        <Typography variant="h4" component="h1" gutterBottom fontWeight="bold">
+          {selectedProduct.name}
+        </Typography>
+        <Typography variant="h5" component="h2" gutterBottom fontWeight="bold">
+          ${selectedProduct.price}
+        </Typography>
+        <Typography variant="h6" component="h2" gutterBottom fontWeight="bold">
+          Available Stock: {selectedProduct.stock}
+        </Typography>
+        <Typography variant="body1">{selectedProduct.description}</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 2,
+            marginTop: 2,
+          }}
+        >
+          <Typography variant="h6" fontWeight="bold">
+            Qty
+          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <IconButton onClick={() => handleQuantityChange(-1)}>
+              <RemoveIcon />
+            </IconButton>
+            <Typography variant="h6" sx={{ marginX: 2 }}>
+              {quantity}
+            </Typography>
+            <IconButton onClick={() => handleQuantityChange(1)}>
+              <AddIcon />
+            </IconButton>
+          </Box>
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button
+            variant="contained"
+            color="warning"
+            size="large"
+            sx={{ width: { xs: "100%", sm: "auto" }, py: 1.5 }}
+          >
+            Sepete Ekle
+          </Button>
+        </Box>
+      </Grid>
+    </Grid>
+  );
+}

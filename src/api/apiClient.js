@@ -7,8 +7,8 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-// Axios'un varsayılan temel URL'si.
-axios.defaults.baseURL = "";
+axios.defaults.baseURL = "https://localhost:7226/api/";
+
 // Çapraz kaynak isteklerinde kimlik bilgilerinin (çerezler, HTTP kimlik doğrulama) gönderilmesini sağlar.
 axios.defaults.withCredentials = true;
 
@@ -26,7 +26,6 @@ axios.interceptors.response.use(
   },
   (error) => {
     const { data, status } = error.response;
-    debugger;
     switch (status) {
       case 400: // Kötü İstek (Bad Request)
         toast.error(data.message);
@@ -59,8 +58,9 @@ const methods = {
 };
 
 const products = {
-  list: () => methods.get("products"),
-  details: (id) => methods.get(`products/${id}`),
+  all: () => methods.get("products"),
+  byId: (id) => methods.get(`products/${id}`),
+  byCategory: (categoryId) => methods.get(`products/by-category/${categoryId}`),
 };
 
 const cart = {
@@ -89,4 +89,12 @@ const wishlist = {
   removeItem: (productId) => methods.delete(`wishlist?productId=${productId}`),
 };
 
-export { methods, products, cart, account, orders, wishlist };
+const requests = {
+  products,
+  wishlist,
+  cart,
+  account,
+  orders,
+};
+
+export default requests;

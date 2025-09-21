@@ -4,6 +4,20 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Paper, CardMedia } from "@mui/material";
 
 export default function ProductCarousel({ items }) {
+  if (!items || items.length === 0) {
+    return (
+      <Paper elevation={0} sx={{ backgroundColor: "transparent" }}>
+        <CardMedia
+          component="img"
+          image="https://placehold.co/200x200"
+          alt="No images available"
+          loading="lazy"
+          sx={{ width: "100%", height: "100%", objectFit: "contain" }}
+        />
+      </Paper>
+    );
+  }
+
   return (
     <Carousel
       showArrows={true}

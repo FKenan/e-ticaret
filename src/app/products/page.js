@@ -1,37 +1,27 @@
+"use client";
 import ProductCard from "@/components/products/productCard";
+import { fetchProducts, selectProducts } from "@/store/slices/productSlice";
 import { Container, Grid, Typography } from "@mui/material";
-
-const Products = [
-  {
-    id: 1,
-    name: "iPhone 14 Pro",
-    price: 1299.99,
-    image: "https://placehold.co/600x400",
-  },
-  {
-    id: 2,
-    name: "Samsung Galaxy S23 Ultra",
-    price: 1199.99,
-    image: "https://placehold.co/600x400",
-  },
-  {
-    id: 3,
-    name: "MacBook Air M2",
-    price: 1099.0,
-    image: "https://placehold.co/600x400",
-  },
-];
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Page() {
-  return (
-    // Tüm ürünler listelenecek
+  const dispatch = useDispatch();
+  const products = useSelector(selectProducts);
 
+  useEffect(() => {
+    if (products.length === 0) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, products.length]);
+
+  return (
     <Container maxWidth="lg" sx={{ my: 8 }}>
       <Typography variant="h4" component="h2" gutterBottom fontWeight="bold">
         All Products
       </Typography>
       <Grid container spacing={6}>
-        {Products.map((product) => (
+        {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </Grid>

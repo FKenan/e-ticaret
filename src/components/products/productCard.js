@@ -12,7 +12,7 @@ import Link from "next/link";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useDispatch, useSelector } from "react-redux";
-import { addToWishlist } from "../../store/slices/wishlistSlice";
+import { toast } from "react-toastify";
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ export default function ProductCard({ product }) {
     e.stopPropagation(); // Stop event propagation to parent Link
     if (!isInWishlist) {
       dispatch(addToWishlist(product));
-      // Optionally, show a toast notification
+      toast.success("Product added to wishlist!");
     }
   };
 
