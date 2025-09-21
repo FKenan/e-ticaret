@@ -17,6 +17,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useEffect, useState } from "react";
+import NoProductsFound from "./NoProductsFound";
 
 export default function ProductDetail({ id }) {
   const dispatch = useDispatch();
@@ -48,18 +49,7 @@ export default function ProductDetail({ id }) {
   }
 
   if (!selectedProduct) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "80vh",
-        }}
-      >
-        <Typography variant="h6">Product not found</Typography>
-      </Box>
-    );
+    return <NoProductsFound />;
   }
 
   return (

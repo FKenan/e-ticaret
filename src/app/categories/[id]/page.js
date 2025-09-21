@@ -1,56 +1,32 @@
 "use client";
-import React, { use } from "react";
-import { Container, Typography, Grid } from "@mui/material";
+import NoProductsFound from "@/components/products/NoProductsFound";
 import ProductCard from "@/components/products/productCard";
+import { fetchProducts, selectProducts } from "@/store/slices/productSlice";
+import { Container, Grid, Typography } from "@mui/material";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-const Products = [
-  {
-    id: 1,
-    name: "Example Product 1",
-    price: 29.99,
-    image: "https://placehold.co/200x200",
-  },
-  {
-    id: 2,
-    name: "Example Product 2",
-    price: 49.99,
-    image: "https://placehold.co/200x200",
-  },
-  {
-    id: 3,
-    name: "Product 1",
-    price: 29.99,
-    image: "https://placehold.co/200x200",
-  },
-  {
-    id: 4,
-    name: "Example Product 2",
-    price: 49.99,
-    image: "https://placehold.co/200x200",
-  },
-  {
-    id: 5,
-    name: "Example Product 1",
-    price: 29.99,
-    image: "https://placehold.co/200x200",
-  },
-  {
-    id: 6,
-    name: "Example Product 2",
-    price: 49.99,
-    image: "https://placehold.co/200x200",
-  },
-];
+export default function Page() {
+  const dispatch = useDispatch();
+  const products = useSelector(selectProducts);
 
-export default function CategoryPage({ params }) {
-  const { id } = use(params);
+  useEffect(() => {
+    if (products.length === 0) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, products.length]);
+
+  if (products.length === 0) {
+    return <NoProductsFound />;
+  }
+
   return (
     <Container maxWidth="lg" sx={{ my: 8 }}>
       <Typography variant="h4" component="h2" gutterBottom fontWeight="bold">
-        Products in Category {id}
+        All Products
       </Typography>
       <Grid container spacing={6}>
-        {Products.map((product) => (
+        {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </Grid>
