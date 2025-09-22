@@ -6,7 +6,8 @@ import {
   selectCategories,
   selectCategoryLoading,
 } from "@/store/slices/categorySlice";
-import { Box, CircularProgress, Grid, Typography } from "@mui/material";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
+import { Box, Grid, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -25,9 +26,7 @@ export default function Page() {
         Categories
       </Typography>
       {loading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-          <CircularProgress />
-        </Box>
+        <LoadingSpinner />
       ) : categories.length === 0 ? (
         <NoProductFound />
       ) : (

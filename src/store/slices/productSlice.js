@@ -9,8 +9,7 @@ const initialState = {
   products: [],
   productsByCategory: [],
   selectedProduct: null,
-  loading: false,
-  error: null,
+  loading: true, 
 };
 
 // Tüm ürünleri getiren async thunk

@@ -7,7 +7,7 @@ import requests from "../../api/apiClient";
 
 const initialState = {
   categories: [],
-  loading: false,
+  loading: true, // Set to true initially to indicate data is being fetched
   error: null,
 };
 

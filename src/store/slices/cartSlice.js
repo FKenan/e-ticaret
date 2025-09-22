@@ -1,42 +1,124 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
+import {
+  createSlice,
+  createAsyncThunk,
+  createSelector,
+} from "@reduxjs/toolkit";
+import requests from "../../api/apiClient";
+
+// Sepeti getiren thunk
+export const fetchCart = createAsyncThunk(
+  "cart/fetchCart",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await requests.cart.get();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Sepete ürün ekleyen thunk
+export const addToCart = createAsyncThunk(
+  "cart/addToCart",
+  async ({ productId, quantity = 1 }, { rejectWithValue }) => {
+    try {
+      const response = await requests.cart.addItem(productId, quantity);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Sepetten ürün silen thunk
+export const removeFromCart = createAsyncThunk(
+  "cart/removeFromCart",
+  async ({ productId, quantity = 1 }, { rejectWithValue }) => {
+    try {
+      const response = await requests.cart.deleteItem(productId, quantity);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const initialState = {
-  items: [], // { id, name, price, quantity }
+  items: [],
+  status: "idle",
+  error: null,
 };
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {
-    addToCart(state, action) {
-      const { id } = action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
-      if (existingItem) {
-        existingItem.quantity++;
-      } else {
-        state.items.push({ ...action.payload, quantity: 1 });
-      }
-      toast.success("Product added to cart!");
-    },
-    removeFromCart(state, action) {
-      const idToRemove = action.payload;
-      state.items = state.items.filter((item) => item.id !== idToRemove);
-      toast.error("Product removed from cart!");
-    },
-    updateQuantity(state, action) {
-      const { id, quantity } = action.payload;
-      const itemToUpdate = state.items.find((item) => item.id === id);
-      if (itemToUpdate) {
-        itemToUpdate.quantity = quantity;
-      }
-    },
-    clearCart(state) {
-      state.items = [];
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      // fetchCart
+      .addCase(fetchCart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchCart.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.items = action.payload;
+      })
+      .addCase(fetchCart.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      // addToCart
+      .addCase(addToCart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(addToCart.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.items = action.payload;
+      })
+      .addCase(addToCart.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      // removeFromCart
+      .addCase(removeFromCart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(removeFromCart.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.items = action.payload;
+      })
+      .addCase(removeFromCart.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
   },
 });
 
-export const { addToCart, removeFromCart, updateQuantity, clearCart } =
-  cartSlice.actions;
 export default cartSlice.reducer;
+
+// SELECTORS
+const selectCartState = (state) => state.cart;
+
+export const selectCartItems = createSelector(
+  [selectCartState],
+  (cart) => cart.items
+);
+
+export const selectCartStatus = createSelector(
+  [selectCartState],
+  (cart) => cart.status
+);
+
+export const selectCartError = createSelector(
+  [selectCartState],
+  (cart) => cart.error
+);
+
+// Extra selectors
+export const selectCartSubtotal = createSelector([selectCartItems], (items) =>
+  items.reduce((subtotal, item) => subtotal + item.price * item.quantity, 0)
+);
+
+export const selectCartTotalItems = createSelector([selectCartItems], (items) =>
+  items.reduce((total, item) => total + item.quantity, 0)
+);

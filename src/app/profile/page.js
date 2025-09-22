@@ -11,8 +11,8 @@ import {
   Divider,
   Button,
   CardActionArea,
-  CircularProgress,
 } from "@mui/material";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
 import { logout } from "../../store/slices/userSlice";
 import ShoppingBag from "@mui/icons-material/ShoppingBag";
 import Favorite from "@mui/icons-material/Favorite";
@@ -39,16 +39,7 @@ export default function ProfilePage() {
 
   if (loading || !isAuthenticated) {
     return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "80vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
+      <LoadingSpinner />
     );
   }
 
