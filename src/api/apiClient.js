@@ -1,11 +1,9 @@
 /**
  * Bu dosya, uygulamanın backend API'si ile iletişim kurmak için kullanılan
  * temel API istemcisini (Axios tabanlı) içerir.
- * HTTP isteklerini yönetir, kimlik doğrulama token'ını ekler ve
- * merkezi hata yönetimi sağlar.
+ * HTTP isteklerini yönetir, kimlik doğrulama token'ını ekler.
  */
 import axios from "axios";
-import { toast } from "react-toastify";
 
 axios.defaults.baseURL = "https://localhost:7226/api/";
 
@@ -14,39 +12,10 @@ axios.defaults.withCredentials = true;
 
 // Her giden HTTP isteğine, varsa kimlik doğrulama (Authorization) başlığını ekler.
 axios.interceptors.request.use((request) => {
-  const token = null; //sonra eklenecek
+  const token = localStorage.getItem("authToken"); // localStorage'dan token'ı al
   if (token) request.headers.Authorization = `Bearer ${token}`;
   return request;
 });
-
-// Gelen HTTP yanıtlarını işler ve merkezi hata yönetimi sağlar.
-axios.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    const { data, status } = error.response;
-    switch (status) {
-      case 400: // Kötü İstek (Bad Request)
-        toast.error(data.message);
-        break;
-      case 401: // Yetkisiz (Unauthorized)
-        toast.error(data.message);
-        break;
-      case 403: // Yasak (Forbidden)
-        toast.error(data.message);
-        break;
-      case 404: // Bulunamadı (Not Found)
-        break;
-      case 500: // Sunucu Hatası (Internal Server Error)
-        break;
-      default:
-        break;
-    }
-
-    return Promise.reject(error);
-  }
-);
 
 // Temel HTTP metotları (GET, POST, PUT, DELETE) için yardımcı fonksiyonlar.
 // Her yanıtın sadece 'data' kısmını döndürür.
@@ -76,9 +45,9 @@ const cart = {
 };
 
 const account = {
-  login: (formData) => methods.post("users/login", formData),
-  register: (formData) => methods.post("users/register", formData),
-  getUser: () => methods.get("users/getUser"),
+  login: (formData) => methods.post("auth/login", formData),
+  register: (formData) => methods.post("auth/register", formData),
+  getUser: () => methods.get("auth/profile"),
 };
 
 const orders = {

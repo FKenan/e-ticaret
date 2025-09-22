@@ -16,13 +16,19 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
-import { registerUser } from "@/store/slices/userSlice";
+import PhoneIcon from "@mui/icons-material/Phone";
+import {
+  registerUser,
+  selectUserLoading,
+  selectUserError,
+} from "@/store/slices/userSlice";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
+    phoneNumber: "",
     password: "",
     confirmPassword: "",
   });
@@ -30,7 +36,8 @@ export default function LoginPage() {
 
   const dispatch = useDispatch();
   const router = useRouter();
-  const { loading, error: reduxError } = useSelector((state) => state.user);
+  const loading = useSelector(selectUserLoading);
+  const reduxError = useSelector(selectUserError);
 
   const validate = () => {
     let tempErrors = {};
@@ -38,6 +45,9 @@ export default function LoginPage() {
       tempErrors.email = "Email is required.";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       tempErrors.email = "Email is not valid.";
+    }
+    if (!formData.phoneNumber) {
+      tempErrors.phoneNumber = "Phone number is required.";
     }
     if (formData.password !== formData.confirmPassword) {
       tempErrors.confirmPassword = "Passwords do not match.";
@@ -53,9 +63,9 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      const { firstName, lastName, email, password } = formData;
+      const { firstName, lastName, email, password, phoneNumber } = formData;
       const result = await dispatch(
-        registerUser({ firstName, lastName, email, password })
+        registerUser({ firstName, lastName, email, password, phoneNumber })
       );
       if (registerUser.fulfilled.match(result)) {
         router.push("/login");
@@ -153,6 +163,28 @@ export default function LoginPage() {
             margin="normal"
             required
             fullWidth
+            id="phoneNumber"
+            label="Phone Number"
+            name="phoneNumber"
+            autoComplete="tel"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            error={!!errors.phoneNumber}
+            helperText={errors.phoneNumber}
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <PhoneIcon />
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
             name="password"
             label="Password"
             type="password"
@@ -197,7 +229,14 @@ export default function LoginPage() {
           />
           {reduxError && (
             <Alert severity="error" sx={{ mt: 2 }}>
-              {reduxError.message || "An error occurred during registration."}
+              {typeof reduxError === "string"
+                ? reduxError
+                : reduxError.message ||
+                  (reduxError.errors &&
+                    Object.values(reduxError.errors).map((err, index) => (
+                      <div key={index}>{err}</div>
+                    ))) ||
+                  "An error occurred during registration."}
             </Alert>
           )}
           <Button

@@ -25,7 +25,7 @@ const StyledButton = styled(Button)({
 export default function NotFound() {
   return (
     <StyledContainer maxWidth="md">
-      <StyledTypography variant="h1" component="h1" color="primary">
+      <StyledTypography variant="h1" component="h1" color="warning">
         404
       </StyledTypography>
       <StyledTypography variant="h4" component="h2" gutterBottom>
@@ -36,7 +36,7 @@ export default function NotFound() {
       </StyledTypography>
       <StyledButton
         variant="contained"
-        color="primary"
+        color="warning"
         component={Link}
         href="/"
       >

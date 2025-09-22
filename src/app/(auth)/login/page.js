@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Container,
   Box,
@@ -11,14 +11,31 @@ import {
 } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import {
+  loginUser,
+  selectIsAuthenticated,
+  selectUserLoading,
+} from "@/store/slices/userSlice";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const loading = useSelector(selectUserLoading);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/profile");
+    }
+  }, [isAuthenticated, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // submit logic here
+    dispatch(loginUser({ email, password }));
   };
 
   return (
@@ -87,6 +104,7 @@ export default function LoginPage() {
             size="large"
             color="warning"
             sx={{ mt: 3, mb: 2, py: 1.5, borderRadius: "16px" }}
+            disabled={loading}
           >
             Login
           </Button>

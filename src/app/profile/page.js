@@ -1,6 +1,7 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 import {
   Container,
   Typography,
@@ -10,6 +11,7 @@ import {
   Divider,
   Button,
   CardActionArea,
+  CircularProgress,
 } from "@mui/material";
 import { logout } from "../../store/slices/userSlice";
 import ShoppingBag from "@mui/icons-material/ShoppingBag";
@@ -19,27 +21,45 @@ import Payment from "@mui/icons-material/Payment";
 import Link from "next/link";
 
 export default function ProfilePage() {
-  const { userInfo } = useSelector((state) => state.user);
+  const { userInfo, isAuthenticated, loading } = useSelector(
+    (state) => state.user
+  );
   const dispatch = useDispatch();
+  const router = useRouter();
 
-  // Placeholder data
-  const user = userInfo || {
-    name: "Kenan",
-    email: "kenan@example.com",
-  };
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      router.push("/login");
+    }
+  }, [isAuthenticated, loading, router]);
 
   const handleLogout = () => {
     dispatch(logout());
   };
 
+  if (loading || !isAuthenticated) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
       <Box sx={{ textAlign: "center", mb: 4 }}>
         <Typography variant="h3" component="h1" gutterBottom>
-          {user.name}
+          {userInfo?.firstName} {userInfo?.lastName}
         </Typography>
         <Typography variant="h6" color="text.secondary">
-          {user.email}
+          {userInfo?.email}
         </Typography>
       </Box>
       <Grid container spacing={3} sx={{ mb: 4 }}>
