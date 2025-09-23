@@ -57,9 +57,9 @@ const orders = {
 };
 
 const wishlist = {
-  get: () => methods.get("wishlist"),
-  addItem: (productId) => methods.post(`wishlist?productId=${productId}`, {}),
-  removeItem: (productId) => methods.delete(`wishlist?productId=${productId}`),
+  get: (userId) => methods.get(`wishlists/user/${userId}`),
+  addItem: (item) => methods.post("wishlists", item),
+  removeItem: (id) => methods.delete(`wishlists/${id}`),
 };
 
 const requests = {

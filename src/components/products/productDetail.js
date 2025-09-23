@@ -15,6 +15,13 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { useEffect, useState } from "react";
 import NoProductsFound from "./NoProductsFound";
 import { toast } from "react-toastify";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import {
+  addToWishlist,
+  removeFromWishlist,
+  selectWishlistItems,
+} from "@/store/slices/wishlistSlice";
 
 export default function ProductDetail({ id }) {
   const dispatch = useDispatch();
@@ -22,6 +29,10 @@ export default function ProductDetail({ id }) {
   const loading = useSelector(selectProductLoading);
   const userInfo = useSelector(selectUserInfo);
   const [quantity, setQuantity] = useState(1);
+  const wishlistItems = useSelector(selectWishlistItems);
+  const isInWishlist = selectedProduct
+    ? wishlistItems.some((item) => item.productId === selectedProduct.id)
+    : false;
 
   useEffect(() => {
     dispatch(fetchProductById(id));
@@ -43,6 +54,25 @@ export default function ProductDetail({ id }) {
         quantity,
       })
     );
+  };
+
+  const handleAddToWishlist = () => {
+    if (!userInfo || !userInfo.id) {
+      toast.error("Please log in to add items to your wishlist.");
+      return;
+    }
+    if (isInWishlist) {
+      const wishlistItem = wishlistItems.find(
+        (item) => item.productId === selectedProduct.id
+      );
+      if (wishlistItem) {
+        dispatch(removeFromWishlist(wishlistItem.id));
+      }
+    } else {
+      dispatch(
+        addToWishlist({ userId: userInfo.id, productId: selectedProduct.id })
+      );
+    }
   };
 
   return loading ? (
@@ -89,7 +119,22 @@ export default function ProductDetail({ id }) {
             </IconButton>
           </Box>
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <IconButton
+            aria-label="add to wishlist"
+            size="large"
+            onClick={handleAddToWishlist}
+            color={isInWishlist ? "error" : "default"}
+          >
+            {isInWishlist ? <FavoriteIcon /> : <FavoriteBorderOutlinedIcon />}
+          </IconButton>
           <Button
             variant="contained"
             color="warning"

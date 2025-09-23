@@ -1,54 +1,44 @@
 "use client";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Grid, Typography, Box } from "@mui/material";
+import { Grid, Typography, Box, CircularProgress } from "@mui/material";
 import WishlistItemCard from "../../../components/wishlist/wishlistItemCard";
-import { setWishlist } from "../../../store/slices/wishlistSlice";
-import { wishlist as wishlistApi } from "../../../api/apiClient";
+import {
+  fetchWishlistByUserId,
+  selectWishlistItems,
+  selectWishlistStatus,
+} from "../../../store/slices/wishlistSlice";
+import NoProductsFound from "../../../components/products/NoProductsFound";
+import { selectUserInfo } from "@/store/slices/userSlice";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 const WishlistPage = () => {
   const dispatch = useDispatch();
-  const wishlistItems = useSelector((state) => state.wishlist.items);
-  const [loading, setLoading] = React.useState(true);
+  const wishlistItems = useSelector(selectWishlistItems);
+  const status = useSelector(selectWishlistStatus);
+  const userInfo = useSelector(selectUserInfo);
 
   useEffect(() => {
-    // const fetchWishlist = async () => {
-    //   try {
-    //     setLoading(true);
-    //     const response = await wishlistApi.get();
-    //     dispatch(setWishlist(response));
-    //   } catch (error) {
-    //     console.error("Failed to fetch wishlist:", error);
-    //     // Optionally, show a toast notification for error
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-    // fetchWishlist();
-  }, [dispatch]);
+    if (userInfo) {
+      dispatch(fetchWishlistByUserId(userInfo.id));
+    }
+  }, [dispatch, userInfo]);
 
-  if (loading) {
-    return (
-      <Box sx={{ padding: 3 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          My Wishlist
-        </Typography>
-        <Typography>Loading...</Typography>
-      </Box>
-    );
+  if (status === "loading") {
+    return <LoadingSpinner />;
   }
 
   return (
     <Box sx={{ padding: 3 }}>
       <Typography variant="h4" component="h1" gutterBottom>
-        İstek Listem
+        My Wishlist
       </Typography>
       {wishlistItems.length === 0 ? (
-        <Typography>There are no products in your wishlist yet.</Typography>
+        <NoProductsFound message="There are no products in your wishlist yet." />
       ) : (
         <Grid container spacing={2}>
-          {wishlistItems.map((product) => (
-            <WishlistItemCard key={product.id} product={product} />
+          {wishlistItems.map((item) => (
+            <WishlistItemCard key={item.id} item={item} />
           ))}
         </Grid>
       )}

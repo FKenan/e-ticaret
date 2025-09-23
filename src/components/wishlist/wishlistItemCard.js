@@ -1,108 +1,113 @@
 "use client";
 import {
-  Grid,
-  CardMedia,
+  Card,
   CardContent,
+  CardMedia,
   Typography,
-  Button,
+  IconButton,
   Box,
+  Grid,
 } from "@mui/material";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { removeFromWishlist } from "../../store/slices/wishlistSlice";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function WishlistItemCard({ product }) {
+export default function WishlistItemCard({ item }) {
   const dispatch = useDispatch();
 
   const handleRemoveFromWishlist = (e) => {
     e.preventDefault();
-    dispatch(removeFromWishlist(product.id));
+    dispatch(removeFromWishlist(item.id));
   };
+
+  const { product } = item;
+
+  if (!product) {
+    return null;
+  }
 
   return (
     <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-      <Link
-        href={`/products/${product.id}`}
-        style={{ textDecoration: "none", color: "inherit", flexGrow: 1 }}
+      <Card
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+          borderRadius: "8px",
+          transition: "box-shadow 0.3s",
+          "&:hover": {
+            boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+          },
+        }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            padding: 1,
-            height: "100%",
-            border: "1px solid #e0e0e0",
-            borderRadius: "8px",
-            "&:hover": {
-              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-            },
-          }}
+        <Link
+          href={`/products/${product.id}`}
+          style={{ textDecoration: "none", color: "inherit" }}
         >
           <CardMedia
             component="img"
             loading="lazy"
             sx={{
-              width: 100,
-              height: 100,
+              height: 200,
               objectFit: "contain",
-              marginRight: 2,
             }}
             image={product.image}
             alt={product.name}
           />
-          <CardContent
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              textAlign: "left",
-              width: "100%",
-              height: "100%",
-              padding: "8px 0",
-              "&:last-child": {
-                paddingBottom: "8px",
-              },
-            }}
-          >
-            <Typography
-              gutterBottom
-              variant="subtitle1"
-              component="div"
-              fontWeight="bold"
-            >
-              {product.name}
-            </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                width: "100%",
-                marginTop: 1,
-              }}
+        </Link>
+        <CardContent
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            p: 2,
+          }}
+        >
+          <Box>
+            <Link
+              href={`/products/${product.id}`}
+              style={{ textDecoration: "none", color: "inherit" }}
             >
               <Typography
-                variant="body1"
-                color="text.secondary"
+                gutterBottom
+                variant="subtitle1"
+                component="div"
                 fontWeight="bold"
+                sx={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  display: "-webkit-box",
+                  WebkitLineClamp: "2",
+                  WebkitBoxOrient: "vertical",
+                }}
               >
-                ${product.price.toFixed(2)}
+                {product.name}
               </Typography>
-              <Button
-                variant="outlined"
-                color="error"
-                size="small"
-                sx={{ whiteSpace: "nowrap" }}
-                onClick={handleRemoveFromWishlist}
-              >
-                Remove
-              </Button>
-            </Box>
-          </CardContent>
-        </Box>
-      </Link>
+            </Link>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mt: 1,
+            }}
+          >
+            <Typography variant="h6" color="text.primary" fontWeight="bold">
+              ${product.price.toFixed(2)}
+            </Typography>
+            <IconButton
+              aria-label="remove from wishlist"
+              onClick={handleRemoveFromWishlist}
+              color="error"
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Box>
+        </CardContent>
+      </Card>
     </Grid>
   );
 }

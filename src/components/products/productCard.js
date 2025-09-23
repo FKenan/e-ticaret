@@ -15,19 +15,36 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addToCart } from "../../store/slices/cartSlice";
 import { selectUserInfo } from "../../store/slices/userSlice";
+import {
+  addToWishlist,
+  removeFromWishlist,
+  selectWishlistItems,
+} from "../../store/slices/wishlistSlice";
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
-  const wishlistItems = useSelector((state) => state.wishlist.items);
-  const isInWishlist = wishlistItems.some((item) => item.id === product.id);
+  const wishlistItems = useSelector(selectWishlistItems);
   const user = useSelector(selectUserInfo);
+  const isInWishlist = wishlistItems.some(
+    (item) => item.productId === product.id
+  );
 
   const handleAddToWishlist = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!isInWishlist) {
-      dispatch(addToWishlist(product));
-      toast.success("Product added to wishlist!");
+    if (!user) {
+      toast.error("Please login to add items to your wishlist.");
+      return;
+    }
+    if (isInWishlist) {
+      const wishlistItem = wishlistItems.find(
+        (item) => item.productId === product.id
+      );
+      if (wishlistItem) {
+        dispatch(removeFromWishlist(wishlistItem.id));
+      }
+    } else {
+      dispatch(addToWishlist({ UserId: user.id, ProductId: product.id }));
     }
   };
 
