@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Box,
@@ -64,6 +64,11 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const { isAuthenticated, userInfo } = useSelector((state) => state.user);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -115,74 +120,79 @@ export default function Navbar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            {isAuthenticated ? (
-              <div>
-                <IconButton onClick={handleMenu} color="inherit" sx={{ p: 0 }}>
-                  <Avatar sx={{ bgcolor: "warning.main" }}>
-                    {userInfo?.firstName?.charAt(0).toUpperCase()}
-                  </Avatar>
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center",
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem
-                    component={Link}
-                    href="/profile"
-                    onClick={handleClose}
+            {isClient &&
+              (isAuthenticated ? (
+                <div>
+                  <IconButton
+                    onClick={handleMenu}
+                    color="inherit"
+                    sx={{ p: 0 }}
                   >
-                    Profile
-                  </MenuItem>
-                  <MenuItem
-                    component={Link}
-                    href="/orders"
-                    onClick={handleClose}
+                    <Avatar sx={{ bgcolor: "warning.main" }}>
+                      {userInfo?.firstName?.charAt(0).toUpperCase()}
+                    </Avatar>
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "center",
+                    }}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
                   >
-                    My Orders
-                  </MenuItem>
-                  <MenuItem
+                    <MenuItem
+                      component={Link}
+                      href="/profile"
+                      onClick={handleClose}
+                    >
+                      Profile
+                    </MenuItem>
+                    <MenuItem
+                      component={Link}
+                      href="/orders"
+                      onClick={handleClose}
+                    >
+                      My Orders
+                    </MenuItem>
+                    <MenuItem
+                      component={Link}
+                      href="/profile/wishlist"
+                      onClick={handleClose}
+                    >
+                      Wishlist
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  </Menu>
+                </div>
+              ) : (
+                <Box>
+                  <Button
                     component={Link}
-                    href="/profile/wishlist"
-                    onClick={handleClose}
+                    href="/login"
+                    color="warning"
+                    variant="outlined"
+                    sx={{ mr: 1 }}
                   >
-                    Wishlist
-                  </MenuItem>
-                  <Divider />
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                </Menu>
-              </div>
-            ) : (
-              <Box>
-                <Button
-                  component={Link}
-                  href="/login"
-                  color="warning"
-                  variant="outlined"
-                  sx={{ mr: 1 }}
-                >
-                  Login
-                </Button>
-                <Button
-                  component={Link}
-                  href="/register"
-                  color="warning"
-                  variant="contained"
-                >
-                  Sign Up
-                </Button>
-              </Box>
-            )}
+                    Login
+                  </Button>
+                  <Button
+                    component={Link}
+                    href="/register"
+                    color="warning"
+                    variant="contained"
+                  >
+                    Sign Up
+                  </Button>
+                </Box>
+              ))}
           </Box>
         </Toolbar>
       </AppBar>

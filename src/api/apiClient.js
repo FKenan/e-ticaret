@@ -12,13 +12,12 @@ axios.defaults.withCredentials = true;
 
 // Her giden HTTP isteğine, varsa kimlik doğrulama (Authorization) başlığını ekler.
 axios.interceptors.request.use((request) => {
-  const token = localStorage.getItem("authToken"); // localStorage'dan token'ı al
+  const token = localStorage.getItem("authToken"); 
   if (token) request.headers.Authorization = `Bearer ${token}`;
   return request;
 });
 
 // Temel HTTP metotları (GET, POST, PUT, DELETE) için yardımcı fonksiyonlar.
-// Her yanıtın sadece 'data' kısmını döndürür.
 const methods = {
   get: (url) => axios.get(url).then((response) => response.data),
   post: (url, body) => axios.post(url, body).then((response) => response.data),

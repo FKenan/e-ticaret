@@ -12,7 +12,7 @@ export const fetchCart = createAsyncThunk(
   async (userId, { rejectWithValue }) => {
     try {
       const response = await requests.cart.get(userId);
-      return response.data;
+      return response;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -22,10 +22,11 @@ export const fetchCart = createAsyncThunk(
 // Sepete ürün ekleyen thunk
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
-  async ({ userId, productId, quantity = 1 }, { rejectWithValue }) => {
+  async ({ userId, productId, quantity = 1 }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await requests.cart.addItem(userId, productId, quantity);
-      return response.data;
+      await requests.cart.addItem(userId, productId, quantity);
+      const response = await dispatch(fetchCart(userId));
+      return response.payload;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -35,10 +36,15 @@ export const addToCart = createAsyncThunk(
 // Sepetten ürün silen thunk
 export const removeFromCart = createAsyncThunk(
   "cart/removeFromCart",
-  async ({ userId, productId, amount = 1 }, { rejectWithValue }) => {
+  async ({ userId, productId, amount = 1 }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await requests.cart.decreaseItem(userId, productId, amount);
-      return response.data;
+      await requests.cart.decreaseItem(
+        userId,
+        productId,
+        amount
+      );
+      const response = await dispatch(fetchCart(userId));
+      return response.payload;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -143,9 +149,12 @@ export const selectCartError = createSelector(
 
 // Extra selectors
 export const selectCartSubtotal = createSelector([selectCartItems], (items) =>
-  items.reduce((subtotal, item) => subtotal + item.price * item.quantity, 0)
+  (items || []).reduce(
+    (subtotal, item) => subtotal + item.price * item.quantity,
+    0
+  )
 );
 
 export const selectCartTotalItems = createSelector([selectCartItems], (items) =>
-  items.reduce((total, item) => total + item.quantity, 0)
+  (items || []).reduce((total, item) => total + item.quantity, 0)
 );

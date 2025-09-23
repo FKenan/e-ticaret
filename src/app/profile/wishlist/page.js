@@ -31,9 +31,9 @@ const WishlistPage = () => {
     return (
       <Box sx={{ padding: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          İstek Listem
+          My Wishlist
         </Typography>
-        <Typography>Yükleniyor...</Typography>
+        <Typography>Loading...</Typography>
       </Box>
     );
   }
@@ -44,7 +44,7 @@ const WishlistPage = () => {
         İstek Listem
       </Typography>
       {wishlistItems.length === 0 ? (
-        <Typography>İstek listenizde henüz ürün bulunmamaktadır.</Typography>
+        <Typography>There are no products in your wishlist yet.</Typography>
       ) : (
         <Grid container spacing={2}>
           {wishlistItems.map((product) => (

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import {
   Container,
   Typography,
@@ -9,8 +9,6 @@ import {
   Paper,
   List,
   ListItem,
-  ListItemAvatar,
-  Avatar,
   ListItemText,
   IconButton,
   Button,
@@ -19,45 +17,45 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-
-const initialCartItems = [
-  {
-    id: 1,
-    name: "Sample Product 1",
-    price: 199.99,
-    quantity: 1,
-    image: "https://source.unsplash.com/random/150x150?product=a",
-  },
-  {
-    id: 2,
-    name: "Sample Product 2",
-    price: 89.5,
-    quantity: 2,
-    image: "https://source.unsplash.com/random/150x150?product=b",
-  },
-];
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchCart,
+  addToCart,
+  removeFromCart,
+  selectCartItems,
+  selectCartSubtotal,
+  selectCartTotalItems,
+} from "@/store/slices/cartSlice";
+import { selectUserInfo } from "@/store/slices/userSlice";
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState(initialCartItems);
+  const dispatch = useDispatch();
+  const cartItems = useSelector(selectCartItems);
+  const cartSubtotal = useSelector(selectCartSubtotal);
+  const totalItems = useSelector(selectCartTotalItems);
+  const userInfo = useSelector(selectUserInfo);
+  const userId = userInfo?.id;
 
-  const handleRemoveItem = (id) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  useEffect(() => {
+    if (userId) {
+      dispatch(fetchCart(userId));
+    }
+  }, [dispatch, userId]);
+
+  const handleRemoveItem = (productId, quantity) => {
+    if (userId) {
+      dispatch(removeFromCart({ userId, productId, amount: quantity }));
+    }
   };
 
-  const handleQuantityChange = (id, amount) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + amount) }
-          : item
-      )
-    );
-  };
+  const handleQuantityChange = (productId, amount) => {
+    if (!userId) return;
 
-  const calculateTotal = () => {
-    return cartItems
-      .reduce((acc, item) => acc + item.price * item.quantity, 0)
-      .toFixed(2);
+    if (amount === 1) {
+      dispatch(addToCart({ userId, productId, quantity: 1 }));
+    } else if (amount === -1) {
+      dispatch(removeFromCart({ userId, productId, amount: 1 }));
+    }
   };
 
   return (
@@ -65,7 +63,7 @@ export default function CartPage() {
       <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom>
         My Cart
       </Typography>
-      {cartItems.length === 0 ? (
+      {totalItems === 0 ? (
         <Paper sx={{ p: 4, textAlign: "center" }}>
           <Typography variant="h6">Your cart is empty.</Typography>
         </Paper>
@@ -73,31 +71,26 @@ export default function CartPage() {
         <Grid container spacing={4}>
           <Grid size={{ xs: 12, md: 8 }}>
             <List>
-              {cartItems.map((item) => (
-                <Paper key={item.id} sx={{ mb: 2 }}>
+              {cartItems?.map((item) => (
+                <Paper key={item.productId} sx={{ mb: 2, p: 1 }}>
                   <ListItem
                     secondaryAction={
                       <IconButton
                         edge="end"
                         aria-label="delete"
-                        onClick={() => handleRemoveItem(item.id)}
+                        onClick={() =>
+                          handleRemoveItem(item.productId, item.quantity)
+                        }
                       >
                         <DeleteIcon color="warning" />
                       </IconButton>
                     }
                   >
-                    <ListItemAvatar>
-                      <Avatar
-                        variant="rounded"
-                        src={item.image}
-                        sx={{ width: 80, height: 80, mr: 2 }}
-                      />
-                    </ListItemAvatar>
-                    <ListItemText primary={item.name} />
+                    <ListItemText primary={item.productName} />
                     <Box sx={{ display: "flex", alignItems: "center", mr: 2 }}>
                       <IconButton
                         size="small"
-                        onClick={() => handleQuantityChange(item.id, -1)}
+                        onClick={() => handleQuantityChange(item.productId, -1)}
                       >
                         <RemoveIcon fontSize="small" />
                       </IconButton>
@@ -106,7 +99,7 @@ export default function CartPage() {
                       </Typography>
                       <IconButton
                         size="small"
-                        onClick={() => handleQuantityChange(item.id, 1)}
+                        onClick={() => handleQuantityChange(item.productId, 1)}
                       >
                         <AddIcon fontSize="small" />
                       </IconButton>
@@ -130,7 +123,7 @@ export default function CartPage() {
               >
                 <Typography variant="h6">Total:</Typography>
                 <Typography variant="h6" fontWeight="bold">
-                  ${calculateTotal()}
+                  ${cartSubtotal.toFixed(2)}
                 </Typography>
               </Box>
               <Button
