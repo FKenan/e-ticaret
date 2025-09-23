@@ -4,13 +4,14 @@ import {
   createSelector,
 } from "@reduxjs/toolkit";
 import requests from "../../api/apiClient";
+import { toast } from "react-toastify";
 
 // Sepeti getiren thunk
 export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
-  async (_, { rejectWithValue }) => {
+  async (userId, { rejectWithValue }) => {
     try {
-      const response = await requests.cart.get();
+      const response = await requests.cart.get(userId);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -21,9 +22,10 @@ export const fetchCart = createAsyncThunk(
 // Sepete ürün ekleyen thunk
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
-  async ({ productId, quantity = 1 }, { rejectWithValue }) => {
+  async ({ userId, productId, quantity = 1 }, { rejectWithValue }) => {
     try {
-      const response = await requests.cart.addItem(productId, quantity);
+      const response = await requests.cart.addItem(userId, productId, quantity);
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -33,10 +35,22 @@ export const addToCart = createAsyncThunk(
 // Sepetten ürün silen thunk
 export const removeFromCart = createAsyncThunk(
   "cart/removeFromCart",
-  async ({ productId, quantity = 1 }, { rejectWithValue }) => {
+  async ({ userId, productId, amount = 1 }, { rejectWithValue }) => {
     try {
-      const response = await requests.cart.deleteItem(productId, quantity);
+      const response = await requests.cart.decreaseItem(userId, productId, amount);
       return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const clearCart = createAsyncThunk(
+  "cart/clearCart",
+  async (userId, { rejectWithValue }) => {
+    try {
+      await requests.cart.clear(userId);
+      return userId;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -74,6 +88,7 @@ const cartSlice = createSlice({
       .addCase(addToCart.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.items = action.payload;
+        toast.success("Product added to cart!");
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.status = "failed";
@@ -88,6 +103,18 @@ const cartSlice = createSlice({
         state.items = action.payload;
       })
       .addCase(removeFromCart.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      // clearCart
+      .addCase(clearCart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(clearCart.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.items = []; // Clear the cart items
+      })
+      .addCase(clearCart.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

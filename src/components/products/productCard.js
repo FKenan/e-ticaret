@@ -13,19 +13,34 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { addToCart } from "../../store/slices/cartSlice";
+import { selectUserInfo } from "../../store/slices/userSlice";
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
   const wishlistItems = useSelector((state) => state.wishlist.items);
   const isInWishlist = wishlistItems.some((item) => item.id === product.id);
+  const user = useSelector(selectUserInfo);
 
   const handleAddToWishlist = (e) => {
-    e.preventDefault(); // Prevent navigation
-    e.stopPropagation(); // Stop event propagation to parent Link
+    e.preventDefault();
+    e.stopPropagation();
     if (!isInWishlist) {
       dispatch(addToWishlist(product));
       toast.success("Product added to wishlist!");
     }
+  };
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!user) {
+      toast.error("Please login to add items to cart.");
+      return;
+    }
+    dispatch(
+      addToCart({ userId: user.id, productId: product.id, quantity: 1 })
+    );
   };
 
   return (
@@ -108,10 +123,7 @@ export default function ProductCard({ product }) {
                 variant="contained"
                 color="warning"
                 sx={{ whiteSpace: "nowrap" }}
-                onClick={(e) => {
-                  // Link tıklamasıyla buton tıklamasını ayır
-                  e.preventDefault();
-                }}
+                onClick={handleAddToCart}
               >
                 Add to cart
               </Button>

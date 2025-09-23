@@ -37,11 +37,12 @@ const categories = {
 };
 
 const cart = {
-  get: () => methods.get("carts"),
-  addItem: (productId, quantity = 1) =>
-    methods.post(`carts?productId=${productId}&quantity=${quantity}`, {}),
-  deleteItem: (productId, quantity = 1) =>
-    methods.delete(`carts?productId=${productId}&quantity=${quantity}`),
+  get: (userId) => methods.get(`carts/${userId}`),
+  addItem: (userId, productId, amount = 1) =>
+    methods.post(`carts/increase`, { userId, productId, amount }),
+  decreaseItem: (userId, productId, amount = 1) =>
+    methods.post(`carts/decrease`, { userId, productId, amount }),
+  clear: (userId) => methods.delete(`carts/clear/${userId}`),
 };
 
 const account = {

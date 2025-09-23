@@ -1,12 +1,6 @@
 "use client";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Grid,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
+import LoadingSpinner from "../common/LoadingSpinner";
 import ProductCarousel from "./productCarousel";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -14,15 +8,19 @@ import {
   selectProductLoading,
   selectSelectedProduct,
 } from "@/store/slices/productSlice";
+import { addToCart } from "@/store/slices/cartSlice";
+import { selectUserInfo } from "@/store/slices/userSlice";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useEffect, useState } from "react";
 import NoProductsFound from "./NoProductsFound";
+import { toast } from "react-toastify";
 
 export default function ProductDetail({ id }) {
   const dispatch = useDispatch();
   const selectedProduct = useSelector(selectSelectedProduct);
   const loading = useSelector(selectProductLoading);
+  const userInfo = useSelector(selectUserInfo);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
@@ -33,26 +31,25 @@ export default function ProductDetail({ id }) {
     setQuantity((prev) => Math.max(1, prev + amount));
   };
 
-  if (loading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "80vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
+  const handleAddToCart = () => {
+    if (!userInfo || !userInfo.id) {
+      toast.error("Please log in to add items to your cart.");
+      return;
+    }
+    dispatch(
+      addToCart({
+        userId: userInfo.id,
+        productId: selectedProduct.id,
+        quantity,
+      })
     );
-  }
+  };
 
-  if (!selectedProduct) {
-    return <NoProductsFound />;
-  }
-
-  return (
+  return loading ? (
+    <LoadingSpinner />
+  ) : !selectedProduct ? (
+    <NoProductsFound />
+  ) : (
     <Grid container spacing={4}>
       <Grid size={{ xs: 12, md: 6 }}>
         <ProductCarousel items={selectedProduct.productImages} />
@@ -98,8 +95,9 @@ export default function ProductDetail({ id }) {
             color="warning"
             size="large"
             sx={{ width: { xs: "100%", sm: "auto" }, py: 1.5 }}
+            onClick={handleAddToCart}
           >
-            Sepete Ekle
+            Add to Cart
           </Button>
         </Box>
       </Grid>

@@ -71,7 +71,7 @@ const loadAuthState = () => {
       userInfo = JSON.parse(userInfoString);
     } catch (e) {
       console.error("Failed to parse user info from localStorage", e);
-      localStorage.removeItem("userInfo"); // Clear invalid data
+      localStorage.removeItem("userInfo"); 
     }
   }
 
