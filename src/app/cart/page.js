@@ -27,9 +27,11 @@ import {
   selectCartTotalItems,
 } from "@/store/slices/cartSlice";
 import { selectUserInfo } from "@/store/slices/userSlice";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const cartItems = useSelector(selectCartItems);
   const cartSubtotal = useSelector(selectCartSubtotal);
   const totalItems = useSelector(selectCartTotalItems);
@@ -131,6 +133,7 @@ export default function CartPage() {
                 size="large"
                 color="warning"
                 fullWidth
+                onClick={() => router.push("/checkout")}
               >
                 Proceed to Checkout
               </Button>

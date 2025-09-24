@@ -29,10 +29,10 @@ export default function NotFound() {
         404
       </StyledTypography>
       <StyledTypography variant="h4" component="h2" gutterBottom>
-        Sayfa Bulunamadı
+        Page Not Found
       </StyledTypography>
       <StyledTypography variant="body1">
-        Üzgünüz, aradığınız sayfa mevcut değil veya taşınmış olabilir.
+        Sorry, the page you are looking for does not exist or may have been moved.
       </StyledTypography>
       <StyledButton
         variant="contained"
@@ -40,7 +40,7 @@ export default function NotFound() {
         component={Link}
         href="/"
       >
-        Ana Sayfaya Dön
+        Go to Homepage
       </StyledButton>
     </StyledContainer>
   );
