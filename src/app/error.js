@@ -31,17 +31,16 @@ export default function Error({ error, reset }) {
   return (
     <StyledContainer maxWidth="md">
       <StyledTypography variant="h1" component="h1" color="error">
-        Hata!
+        Error!
       </StyledTypography>
       <StyledTypography variant="h4" component="h2" gutterBottom>
-        Bir şeyler ters gitti!
+        Something went wrong!
       </StyledTypography>
-      <StyledTypography variant="body1" paragraph>
-        Uygulamada beklenmedik bir hata oluştu. Lütfen daha sonra tekrar
-        deneyin.
+      <StyledTypography variant="body1">
+        An unexpected error occurred in the application. Please try again later.
       </StyledTypography>
-      <StyledButton variant="contained" color="primary" onClick={() => reset()}>
-        Tekrar Dene
+      <StyledButton variant="contained" color="warning" onClick={() => reset()}>
+        Try Again
       </StyledButton>
     </StyledContainer>
   );

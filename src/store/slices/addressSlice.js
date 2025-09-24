@@ -7,9 +7,9 @@ export const getAddresses = createAsyncThunk(
   async (userId, { rejectWithValue }) => {
     try {
       const response = await requests.addresses.get(userId);
-      return response.data;
+      return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -19,9 +19,9 @@ export const addAddress = createAsyncThunk(
   async (address, { rejectWithValue }) => {
     try {
       const response = await requests.addresses.addItem(address);
-      return response.data;
+      return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -31,9 +31,9 @@ export const updateAddress = createAsyncThunk(
   async ({ id, updatedAddress }, { rejectWithValue }) => {
     try {
       const response = await requests.addresses.update(id, updatedAddress);
-      return response.data;
+      return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -45,7 +45,7 @@ export const deleteAddress = createAsyncThunk(
       await requests.addresses.delete(id);
       return id;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -73,6 +73,7 @@ const addressSlice = createSlice({
       })
       .addCase(getAddresses.rejected, (state, action) => {
         state.loading = false;
+
         state.error = action.payload;
       })
       // Add Address

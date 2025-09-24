@@ -1,7 +1,15 @@
 import React from "react";
 import { Card, CardContent, Typography, Box, Button } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { deleteAddress } from "../../store/slices/addressSlice";
 
-const AddressCard = ({address}) => {
+const AddressCard = ({ address }) => {
+  const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    dispatch(deleteAddress(address.id));
+  };
+
   return (
     <Card variant="outlined">
       <CardContent>
@@ -12,7 +20,7 @@ const AddressCard = ({address}) => {
           {address.fullAddress}
         </Typography>
         <Box sx={{ mt: 2, display: "flex", gap: 1 }} justifyContent="flex-end">
-          <Button size="small" variant="outlined" color="error">
+          <Button size="small" variant="outlined" color="error" onClick={handleDelete}>
             Delete
           </Button>
           <Button size="small" variant="outlined">
