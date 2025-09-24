@@ -22,10 +22,9 @@ export default function CheckoutPage() {
   const cartSubtotal = useSelector(selectCartSubtotal);
 
   const [shippingAddress, setShippingAddress] = useState({
-    address: "",
+    fulladdress: "",
     city: "",
-    postalCode: "",
-    country: "",
+    district: "",
   });
 
   const [paymentDetails, setPaymentDetails] = useState({
@@ -62,12 +61,12 @@ export default function CheckoutPage() {
               <Grid size={{ xs: 12 }}>
                 <TextField
                   required
-                  id="address"
-                  name="address"
-                  label="Address line 1"
+                  id="fulladdress"
+                  name="fulladdress"
+                  label="Full Address"
                   fullWidth
-                  autoComplete="shipping address-line1"
-                  value={shippingAddress.address}
+                  autoComplete="shipping fulladdress"
+                  value={shippingAddress.fulladdress}
                   onChange={handleShippingChange}
                 />
               </Grid>
@@ -86,24 +85,12 @@ export default function CheckoutPage() {
               <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   required
-                  id="postalCode"
-                  name="postalCode"
-                  label="Zip / Postal code"
+                  id="district"
+                  name="district"
+                  label="District"
                   fullWidth
-                  autoComplete="shipping postal-code"
-                  value={shippingAddress.postalCode}
-                  onChange={handleShippingChange}
-                />
-              </Grid>
-              <Grid size={{ xs: 12 }}>
-                <TextField
-                  required
-                  id="country"
-                  name="country"
-                  label="Country"
-                  fullWidth
-                  autoComplete="shipping country"
-                  value={shippingAddress.country}
+                  autoComplete="shipping address-level2"
+                  value={shippingAddress.district}
                   onChange={handleShippingChange}
                 />
               </Grid>
@@ -182,7 +169,7 @@ export default function CheckoutPage() {
             <Button
               variant="contained"
               size="large"
-              color="primary"
+              color="warning"
               fullWidth
               onClick={handleSubmit}
             >

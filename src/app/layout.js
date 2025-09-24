@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
               <Navbar />
               {children}
               <Footer />
-              <ToastContainer />
+              <ToastContainer autoClose={1500} hideProgressBar />
             </ReduxProvider>
           </ThemeRegistry>
         </Container>

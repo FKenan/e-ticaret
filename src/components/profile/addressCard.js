@@ -20,7 +20,12 @@ const AddressCard = ({ address }) => {
           {address.fullAddress}
         </Typography>
         <Box sx={{ mt: 2, display: "flex", gap: 1 }} justifyContent="flex-end">
-          <Button size="small" variant="outlined" color="error" onClick={handleDelete}>
+          <Button
+            size="small"
+            variant="outlined"
+            color="error"
+            onClick={handleDelete}
+          >
             Delete
           </Button>
           <Button size="small" variant="outlined">

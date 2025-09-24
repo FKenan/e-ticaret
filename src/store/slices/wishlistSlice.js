@@ -15,7 +15,7 @@ export const fetchWishlistByUserId = createAsyncThunk(
       const response = await requests.wishlist.get(userId);
       return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -25,11 +25,11 @@ export const addToWishlist = createAsyncThunk(
   async (item, { rejectWithValue }) => {
     try {
       const response = await requests.wishlist.addItem(item);
-      toast.success("Product added to wishlist!");
+            toast.success("Product added to wishlist!");
       return response;
     } catch (error) {
       toast.error("Failed to add product to wishlist.");
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -43,7 +43,7 @@ export const removeFromWishlist = createAsyncThunk(
       return id;
     } catch (error) {
       toast.error("Failed to remove product from wishlist.");
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
