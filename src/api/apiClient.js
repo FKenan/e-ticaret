@@ -12,7 +12,7 @@ axios.defaults.withCredentials = true;
 
 // Her giden HTTP isteğine, varsa kimlik doğrulama (Authorization) başlığını ekler.
 axios.interceptors.request.use((request) => {
-  const token = localStorage.getItem("authToken"); 
+  const token = localStorage.getItem("authToken");
   if (token) request.headers.Authorization = `Bearer ${token}`;
   return request;
 });
@@ -62,6 +62,14 @@ const wishlist = {
   removeItem: (id) => methods.delete(`wishlists/${id}`),
 };
 
+const addresses = {
+  get: (userId) => methods.get(`addresses/user/${userId}`),
+  addItem: (address) => methods.post("addresses", address),
+  update: (id, updatedAddress) =>
+    methods.put(`addresses/${id}`, updatedAddress),
+  delete: (id) => methods.delete(`addresses/${id}`),
+};
+
 const requests = {
   products,
   wishlist,
@@ -69,6 +77,7 @@ const requests = {
   account,
   orders,
   categories,
+  addresses,
 };
 
 export default requests;

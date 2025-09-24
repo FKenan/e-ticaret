@@ -4,6 +4,8 @@ import productReducer from "./slices/productSlice";
 import userReducer from "./slices/userSlice";
 import wishlistReducer from "./slices/wishlistSlice";
 import categoryReducer from "./slices/categorySlice";
+import addressReducer from "./slices/addressSlice";
+import orderReducer from "./slices/orderSlice";
 
 // Configure the Redux store with the defined slices
 
@@ -14,5 +16,7 @@ export const store = configureStore({
     user: userReducer,
     wishlist: wishlistReducer,
     categories: categoryReducer,
+    addresses: addressReducer,
+    orders: orderReducer,
   },
 });
