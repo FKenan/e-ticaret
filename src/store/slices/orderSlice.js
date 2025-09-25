@@ -5,7 +5,7 @@ export const getOrders = createAsyncThunk(
   "orders/getOrders",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await requests.get("orders");
+      const response = await requests.orders.getOrders();
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -17,7 +17,7 @@ export const getOrder = createAsyncThunk(
   "orders/getOrder",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await requests.get(`orders/${id}`);
+      const response = await requests.orders.getOrder(id);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -29,7 +29,8 @@ export const createOrder = createAsyncThunk(
   "orders/createOrder",
   async (formData, { rejectWithValue }) => {
     try {
-      const response = await requests.post("orders", formData);
+      const response = await requests.orders.createOrder(formData);
+      console.log("Order created:", response);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
