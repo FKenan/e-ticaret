@@ -8,9 +8,9 @@ import {
   Grid,
 } from "@mui/material";
 import Link from "next/link";
-import React from "react";
+import React, { memo } from "react";
 
-export default function CategoryCard({ category }) {
+function CategoryCard({ category }) {
   return (
     <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
       <Box
@@ -58,3 +58,4 @@ export default function CategoryCard({ category }) {
     </Grid>
   );
 }
+export default memo(CategoryCard);

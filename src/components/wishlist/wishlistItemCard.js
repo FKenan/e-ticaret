@@ -1,4 +1,4 @@
-"use client";
+import React, { memo } from "react";
 import {
   Card,
   CardContent,
@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { removeFromWishlist } from "../../store/slices/wishlistSlice";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function WishlistItemCard({ item }) {
+function WishlistItemCard({ item }) {
   const dispatch = useDispatch();
 
   const handleRemoveFromWishlist = (e) => {
@@ -111,3 +111,5 @@ export default function WishlistItemCard({ item }) {
     </Grid>
   );
 }
+
+export default memo(WishlistItemCard);

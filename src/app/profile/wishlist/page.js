@@ -19,10 +19,10 @@ const WishlistPage = () => {
   const userInfo = useSelector(selectUserInfo);
 
   useEffect(() => {
-    if (userInfo.id) {
+    if (userInfo && userInfo.id) {
       dispatch(fetchWishlistByUserId(userInfo.id));
     }
-  }, [dispatch, userInfo.id]);
+  }, [dispatch, userInfo]);
 
   if (status === "loading") {
     return <LoadingSpinner />;

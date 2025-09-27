@@ -6,7 +6,7 @@ function OrderAddress({ address }) {
   if (!address) {
     return null;
   }
-  console.log("Rendering OrderAddress with address:", address);
+
   return (
     <Box mt={2}>
       <Typography variant="subtitle2" sx={{ fontWeight: "bold" }}>

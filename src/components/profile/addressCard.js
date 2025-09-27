@@ -1,9 +1,9 @@
-import React from "react";
+import React, { memo } from "react";
 import { Card, CardContent, Typography, Box, Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { deleteAddress } from "../../store/slices/addressSlice";
 
-const AddressCard = ({ address }) => {
+function AddressCard({ address }) {
   const dispatch = useDispatch();
 
   const handleDelete = () => {
@@ -35,6 +35,6 @@ const AddressCard = ({ address }) => {
       </CardContent>
     </Card>
   );
-};
+}
 
-export default AddressCard;
+export default memo(AddressCard);

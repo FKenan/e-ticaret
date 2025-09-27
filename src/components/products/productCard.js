@@ -1,4 +1,5 @@
 "use client";
+import { memo } from "react";
 import {
   Grid,
   CardMedia,
@@ -21,7 +22,7 @@ import {
   selectWishlistItems,
 } from "../../store/slices/wishlistSlice";
 
-export default function ProductCard({ product }) {
+function ProductCard({ product }) {
   const dispatch = useDispatch();
   const wishlistItems = useSelector(selectWishlistItems);
   const user = useSelector(selectUserInfo);
@@ -151,3 +152,5 @@ export default function ProductCard({ product }) {
     </Grid>
   );
 }
+
+export default memo(ProductCard);
