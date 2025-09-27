@@ -51,7 +51,7 @@ const account = {
 };
 
 const orders = {
-  getOrders: () => methods.get("orders"),
+  getOrders: (userId) => methods.get(`orders/user/${userId}`),
   getOrder: (id) => methods.get(`orders/${id}`),
   createOrder: (formData) => methods.post("orders", formData),
 };

@@ -58,7 +58,7 @@ export default function ProfilePage() {
           <Card variant="outlined">
             <CardActionArea
               component={Link}
-              href="/orders"
+              href="/profile/orders"
               sx={{ p: 2, textAlign: "center" }}
             >
               <ShoppingBag sx={{ fontSize: 40 }} />

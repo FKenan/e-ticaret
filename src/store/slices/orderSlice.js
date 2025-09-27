@@ -3,12 +3,12 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getOrders = createAsyncThunk(
   "orders/getOrders",
-  async (_, { rejectWithValue }) => {
+  async (userId, { rejectWithValue }) => {
     try {
-      const response = await requests.orders.getOrders();
-      return response.data;
+      const response = await requests.orders.getOrders(userId);
+      return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -18,9 +18,9 @@ export const getOrder = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await requests.orders.getOrder(id);
-      return response.data;
+      return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -31,9 +31,9 @@ export const createOrder = createAsyncThunk(
     try {
       const response = await requests.orders.createOrder(formData);
       console.log("Order created:", response);
-      return response.data;
+      return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
