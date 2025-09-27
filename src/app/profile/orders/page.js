@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Container,
@@ -26,6 +26,7 @@ import OrderCard from "@/components/profile/orders/orderCard";
 
 const OrdersPage = () => {
   const dispatch = useDispatch();
+  const [isClient, setIsClient] = useState(false);
 
   const orders = useSelector(selectOrders);
   const loading = useSelector(selectOrdersLoading);
@@ -33,12 +34,16 @@ const OrdersPage = () => {
   const userInfo = useSelector(selectUserInfo);
 
   useEffect(() => {
-    if (userInfo && userInfo.id) {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient && userInfo && userInfo.id) {
       dispatch(getOrders(userInfo.id));
     }
-  }, [dispatch, userInfo]);
+  }, [dispatch, userInfo, isClient]);
 
-  if (!userInfo) {
+  if (!isClient || !userInfo) {
     return (
       <Box
         sx={{

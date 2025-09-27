@@ -17,14 +17,14 @@ export default function RootLayout({ children }) {
     <html lang="tr">
       <body>
         <Container maxWidth="lg" sx={{ mb: 10 }}>
-          <ThemeRegistry>
-            <ReduxProvider>
+          <ReduxProvider>
+            <ThemeRegistry>
               <Navbar />
               {children}
               <Footer />
               <ToastContainer autoClose={1500} hideProgressBar />
-            </ReduxProvider>
-          </ThemeRegistry>
+            </ThemeRegistry>
+          </ReduxProvider>
         </Container>
       </body>
     </html>

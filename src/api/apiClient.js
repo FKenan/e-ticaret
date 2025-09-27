@@ -12,7 +12,7 @@ axios.defaults.withCredentials = true;
 
 // Her giden HTTP isteğine, varsa kimlik doğrulama (Authorization) başlığını ekler.
 axios.interceptors.request.use((request) => {
-  const token = localStorage.getItem("authToken");
+  const token = sessionStorage.getItem("authToken");
   if (token) request.headers.Authorization = `Bearer ${token}`;
   return request;
 });

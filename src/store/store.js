@@ -6,6 +6,7 @@ import wishlistReducer from "./slices/wishlistSlice";
 import categoryReducer from "./slices/categorySlice";
 import addressReducer from "./slices/addressSlice";
 import orderReducer from "./slices/orderSlice";
+import themeReducer from "./slices/themeSlice";
 
 // Configure the Redux store with the defined slices
 
@@ -18,5 +19,6 @@ export const store = configureStore({
     categories: categoryReducer,
     addresses: addressReducer,
     orders: orderReducer,
+    theme: themeReducer,
   },
 });

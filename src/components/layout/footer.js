@@ -34,7 +34,7 @@ export default function Footer() {
         }}
         sx={{
           "& .MuiBottomNavigationAction-root": {
-            color: "black",
+            color: "text.secondary",
           },
           "& .Mui-selected, & .Mui-selected .MuiSvgIcon-root": {
             color: "warning.main",

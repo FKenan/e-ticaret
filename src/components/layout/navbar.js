@@ -16,17 +16,20 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import styled from "@emotion/styled";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@/store/slices/userSlice";
+import { toggleTheme } from "@/store/slices/themeSlice";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { alpha } from "@mui/material/styles";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: theme.palette.grey[200],
+  backgroundColor: alpha(theme.palette.text.primary, 0.05),
   "&:hover": {
-    backgroundColor: theme.palette.grey[300],
+    backgroundColor: alpha(theme.palette.text.primary, 0.1),
   },
   marginRight: theme.spacing(2),
   marginLeft: theme.spacing(6),
@@ -63,6 +66,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Navbar() {
   const dispatch = useDispatch();
   const { isAuthenticated, userInfo } = useSelector((state) => state.user);
+  const { mode } = useSelector((state) => state.theme);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isClient, setIsClient] = useState(false);
 
@@ -85,10 +89,7 @@ export default function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar
-        position="static"
-        sx={{ backgroundColor: "white", color: "black", boxShadow: "none" }}
-      >
+      <AppBar position="static" color="default" sx={{ boxShadow: "none" }}>
         <Toolbar>
           <Link
             href="/"
@@ -119,6 +120,13 @@ export default function Navbar() {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
+          <IconButton
+            sx={{ ml: 1 }}
+            onClick={() => dispatch(toggleTheme())}
+            color="inherit"
+          >
+            {isClient && mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             {isClient &&
               (isAuthenticated ? (

@@ -14,8 +14,8 @@ export const loginUser = createAsyncThunk(
       const { token, user } = response;
 
       if (typeof window !== "undefined") {
-        localStorage.setItem("authToken", token);
-        localStorage.setItem("userInfo", JSON.stringify(user));
+        sessionStorage.setItem("authToken", token);
+        sessionStorage.setItem("userInfo", JSON.stringify(user));
       }
       toast.success("Login successful!");
       return user;
@@ -51,7 +51,7 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-// Check for existing token in localStorage on app load
+// Check for existing token in sessionStorage on app load
 const loadAuthState = () => {
   if (typeof window === 'undefined') {
     return {
@@ -62,16 +62,16 @@ const loadAuthState = () => {
     };
   }
 
-  const token = localStorage.getItem("authToken");
-  const userInfoString = localStorage.getItem("userInfo");
+  const token = sessionStorage.getItem("authToken");
+  const userInfoString = sessionStorage.getItem("userInfo");
   let userInfo = null;
 
   if (userInfoString) {
     try {
       userInfo = JSON.parse(userInfoString);
     } catch (e) {
-      console.error("Failed to parse user info from localStorage", e);
-      localStorage.removeItem("userInfo"); 
+      console.error("Failed to parse user info from sessionStorage", e);
+      sessionStorage.removeItem("userInfo"); 
     }
   }
 
@@ -101,8 +101,8 @@ const userSlice = createSlice({
       state.userInfo = null;
       state.isAuthenticated = false;
       if (typeof window !== "undefined") {
-        localStorage.removeItem("authToken");
-        localStorage.removeItem("userInfo");
+        sessionStorage.removeItem("authToken");
+        sessionStorage.removeItem("userInfo");
       }
       toast.info("Logged out successfully.");
     },

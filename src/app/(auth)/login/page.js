@@ -112,8 +112,10 @@ export default function LoginPage() {
             href="/register"
             underline="none"
             sx={{
-              color: "black",
-              mt: 2,
+              color: "text.primary",
+              my: 2,
+              display: "block",
+              textAlign: "center",
             }}
           >
             {"Don't have an account? Sign Up"}

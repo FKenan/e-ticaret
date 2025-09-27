@@ -254,7 +254,7 @@ export default function RegisterPage() {
             href="/login"
             underline="none"
             sx={{
-              color: "black",
+              color: "text.primary",
               my: 2,
               display: "block",
               textAlign: "center",
