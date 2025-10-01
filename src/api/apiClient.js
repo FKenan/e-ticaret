@@ -70,6 +70,10 @@ const addresses = {
   delete: (id) => methods.delete(`addresses/${id}`),
 };
 
+const search = {
+  query: (searchTerm) => methods.get(`search/${searchTerm}`),
+};
+
 const requests = {
   products,
   wishlist,
@@ -78,6 +82,7 @@ const requests = {
   orders,
   categories,
   addresses,
+  search,
 };
 
 export default requests;

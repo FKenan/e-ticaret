@@ -7,6 +7,7 @@ import categoryReducer from "./slices/categorySlice";
 import addressReducer from "./slices/addressSlice";
 import orderReducer from "./slices/orderSlice";
 import themeReducer from "./slices/themeSlice";
+import searchReducer from "./slices/searchSlice";
 
 // Configure the Redux store with the defined slices
 
@@ -20,5 +21,6 @@ export const store = configureStore({
     addresses: addressReducer,
     orders: orderReducer,
     theme: themeReducer,
+    search: searchReducer,
   },
 });
