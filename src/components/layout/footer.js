@@ -8,10 +8,24 @@ import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import PersonOutline from "@mui/icons-material/PersonOutline";
 import Divider from "@mui/material/Divider";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const [value, setValue] = useState(0);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname === "/") {
+      setValue(0);
+    } else if (pathname.startsWith("/categories")) {
+      setValue(1);
+    } else if (pathname.startsWith("/cart")) {
+      setValue(2);
+    } else if (pathname.startsWith("/profile")) {
+      setValue(3);
+    }
+  }, [pathname]);
 
   return (
     <Box
@@ -42,36 +56,28 @@ export default function Footer() {
         }}
       >
         <BottomNavigationAction
+          component={Link}
+          href="/"
           label="Home"
-          icon={
-            <Link href="/">
-              <HomeOutlined sx={{ fontSize: 30 }} />
-            </Link>
-          }
+          icon={<HomeOutlined sx={{ fontSize: 30 }} />}
         />
         <BottomNavigationAction
+          component={Link}
+          href="/categories"
           label="Categories"
-          icon={
-            <Link href="/categories">
-              <CategoryOutlined sx={{ fontSize: 30 }} />
-            </Link>
-          }
+          icon={<CategoryOutlined sx={{ fontSize: 30 }} />}
         />
         <BottomNavigationAction
+          component={Link}
+          href="/cart"
           label="Cart"
-          icon={
-            <Link href="/cart">
-              <ShoppingCartOutlined sx={{ fontSize: 30 }} />
-            </Link>
-          }
+          icon={<ShoppingCartOutlined sx={{ fontSize: 30 }} />}
         />
         <BottomNavigationAction
+          component={Link}
+          href="/profile"
           label="Profile"
-          icon={
-            <Link href="/profile">
-              <PersonOutline sx={{ fontSize: 30 }} />
-            </Link>
-          }
+          icon={<PersonOutline sx={{ fontSize: 30 }} />}
         />
       </BottomNavigation>
     </Box>

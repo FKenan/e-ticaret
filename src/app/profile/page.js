@@ -38,9 +38,7 @@ export default function ProfilePage() {
   };
 
   if (loading || !isAuthenticated) {
-    return (
-      <LoadingSpinner />
-    );
+    return <LoadingSpinner />;
   }
 
   return (
@@ -53,7 +51,7 @@ export default function ProfilePage() {
           {userInfo?.email}
         </Typography>
       </Box>
-      <Grid container spacing={3} sx={{ mb: 4 }}>
+      <Grid container spacing={3} sx={{ mb: 4 }} justifyContent="center">
         <Grid size={{ xs: 12, sm: 6 }}>
           <Card variant="outlined">
             <CardActionArea
@@ -87,18 +85,6 @@ export default function ProfilePage() {
             >
               <LocationOn sx={{ fontSize: 40 }} />
               <Typography variant="h6">Addresses</Typography>
-            </CardActionArea>
-          </Card>
-        </Grid>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <Card variant="outlined">
-            <CardActionArea
-              component={Link}
-              href="/payment-methods"
-              sx={{ p: 2, textAlign: "center" }}
-            >
-              <Payment sx={{ fontSize: 40 }} />
-              <Typography variant="h6">Payment Methods</Typography>
             </CardActionArea>
           </Card>
         </Grid>

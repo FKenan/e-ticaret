@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Box,
@@ -8,31 +8,33 @@ import {
   Typography,
   InputBase,
   Button,
-  Menu,
-  MenuItem,
   Avatar,
-  Divider,
+  Badge,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import styled from "@emotion/styled";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "@/store/slices/userSlice";
+import {
+  logout,
+  selectIsAuthenticated,
+  selectUserInfo,
+} from "@/store/slices/userSlice";
 import { toggleTheme } from "@/store/slices/themeSlice";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { alpha } from "@mui/material/styles";
+import { alpha, styled } from "@mui/material/styles";
+import { selectCartItems } from "@/store/slices/cartSlice";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.text.primary, 0.05),
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
   "&:hover": {
-    backgroundColor: alpha(theme.palette.text.primary, 0.1),
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginRight: theme.spacing(2),
-  marginLeft: theme.spacing(6),
+  marginLeft: 0,
   width: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
@@ -65,51 +67,40 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Navbar() {
   const dispatch = useDispatch();
-  const { isAuthenticated, userInfo } = useSelector((state) => state.user);
+  const userInfo = useSelector(selectUserInfo);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const cartItems = useSelector(selectCartItems);
   const { mode } = useSelector((state) => state.theme);
-  const [anchorEl, setAnchorEl] = useState(null);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const handleLogout = () => {
     dispatch(logout());
-    handleClose();
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="default" sx={{ boxShadow: "none" }}>
-        <Toolbar>
-          <Link
-            href="/"
-            style={{
-              textDecoration: "none",
-              color: "inherit",
-              display: "flex",
-              alignItems: "center",
-            }}
+    <AppBar
+      position="sticky"
+      sx={{ bgcolor: "background.paper", color: "text.primary" }}
+    >
+      <Toolbar sx={{ justifyContent: "space-between" }}>
+        {/* Logo */}
+        <Link href="/" passHref>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ display: { xs: "none", sm: "block" } }}
           >
-            <ShoppingCartOutlinedIcon sx={{ mr: 1 }} />
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}
-            >
-              E-Ticaret
-            </Typography>
-          </Link>
+            E-Commerce
+          </Typography>
+        </Link>
+
+        {/* Search */}
+        <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -119,91 +110,67 @@ export default function Navbar() {
               inputProps={{ "aria-label": "search" }}
             />
           </Search>
-          <Box sx={{ flexGrow: 1 }} />
-          <IconButton
-            sx={{ ml: 1 }}
-            onClick={() => dispatch(toggleTheme())}
-            color="inherit"
-          >
-            {isClient && mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+        </Box>
+
+        {/* Actions */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <IconButton onClick={() => dispatch(toggleTheme())} color="inherit">
+            {isClient && mode === "dark" ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
           </IconButton>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            {isClient &&
-              (isAuthenticated ? (
-                <div>
-                  <IconButton
-                    onClick={handleMenu}
-                    color="inherit"
-                    sx={{ p: 0 }}
-                  >
-                    <Avatar sx={{ bgcolor: "warning.main" }}>
-                      {userInfo?.firstName?.charAt(0).toUpperCase()}
-                    </Avatar>
-                  </IconButton>
-                  <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "center",
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "center",
-                    }}
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                  >
-                    <MenuItem
-                      component={Link}
-                      href="/profile"
-                      onClick={handleClose}
-                    >
-                      Profile
-                    </MenuItem>
-                    <MenuItem
-                      component={Link}
-                      href="/orders"
-                      onClick={handleClose}
-                    >
-                      My Orders
-                    </MenuItem>
-                    <MenuItem
-                      component={Link}
-                      href="/profile/wishlist"
-                      onClick={handleClose}
-                    >
-                      Wishlist
-                    </MenuItem>
-                    <Divider />
-                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                  </Menu>
-                </div>
-              ) : (
-                <Box>
-                  <Button
-                    component={Link}
-                    href="/login"
-                    color="warning"
-                    variant="outlined"
-                    sx={{ mr: 1 }}
-                  >
-                    Login
-                  </Button>
-                  <Button
-                    component={Link}
-                    href="/register"
-                    color="warning"
-                    variant="contained"
-                  >
-                    Sign Up
-                  </Button>
-                </Box>
-              ))}
-          </Box>
-        </Toolbar>
-      </AppBar>
-    </Box>
+
+          {isClient && isAuthenticated && (
+            <IconButton component={Link} href="/cart" color="inherit">
+              <Badge
+                badgeContent={isClient ? cartItems.length : 0}
+                color="error"
+              >
+                <ShoppingCartOutlinedIcon />
+              </Badge>
+            </IconButton>
+          )}
+
+          {isClient && isAuthenticated ? (
+            <IconButton component={Link} href="/profile" sx={{ p: 0 }}>
+              <Avatar sx={{ bgcolor: "primary.main" }}>
+                {userInfo?.firstName?.charAt(0).toUpperCase()}
+              </Avatar>
+            </IconButton>
+          ) : (
+            <>
+              <Button
+                component={Link}
+                href="/login"
+                color="inherit"
+                variant="outlined"
+                sx={{ display: { xs: "none", md: "inline-flex" } }}
+              >
+                Login
+              </Button>
+              <Button
+                component={Link}
+                href="/register"
+                color="primary"
+                variant="contained"
+                sx={{ display: { xs: "none", md: "inline-flex" } }}
+              >
+                Sign Up
+              </Button>
+              <IconButton
+                component={Link}
+                href="/login"
+                color="inherit"
+                sx={{ display: { xs: "inline-flex", md: "none" } }}
+              >
+                <Avatar />
+              </IconButton>
+            </>
+          )}
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 }
