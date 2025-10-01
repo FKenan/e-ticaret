@@ -5,7 +5,7 @@
  */
 import axios from "axios";
 
-axios.defaults.baseURL = "https://localhost:7226/api/";
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 // Çapraz kaynak isteklerinde kimlik bilgilerinin (çerezler, HTTP kimlik doğrulama) gönderilmesini sağlar.
 axios.defaults.withCredentials = true;
