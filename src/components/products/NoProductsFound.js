@@ -22,10 +22,10 @@ const NoProductsFound = ({ message }) => {
     >
       <SentimentVeryDissatisfiedIcon sx={{ fontSize: 60, color: 'text.secondary', mb: 2 }} />
       <Typography variant="h6" component="p" gutterBottom>
-        Ürün Bulunamadı
+        No Products Found
       </Typography>
       <Typography variant="body1" color="text.secondary">
-        {message || 'Aradığınız kriterlere uygun ürün bulunamadı.'}
+        {message || 'No products were found matching your criteria.'}
       </Typography>
     </Box>
   );

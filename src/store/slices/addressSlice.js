@@ -1,5 +1,6 @@
 import requests from "@/api/apiClient";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 // Async Thunks
 export const getAddresses = createAsyncThunk(
@@ -45,6 +46,10 @@ export const deleteAddress = createAsyncThunk(
       await requests.addresses.delete(id);
       return id;
     } catch (error) {
+      if (error.response && error.response.status === 409) {
+        toast.error(error.response.data.message);
+        return rejectWithValue(null);
+      }
       return rejectWithValue(error.response);
     }
   }

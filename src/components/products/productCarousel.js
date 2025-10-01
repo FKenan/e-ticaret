@@ -9,7 +9,7 @@ export default function ProductCarousel({ items }) {
       <Paper elevation={0} sx={{ backgroundColor: "transparent" }}>
         <CardMedia
           component="img"
-          image="https://placehold.co/200x200"
+          image="https://placehold.co/200x200.png"
           alt="No images available"
           loading="lazy"
           sx={{ width: "100%", height: "100%", objectFit: "contain" }}
