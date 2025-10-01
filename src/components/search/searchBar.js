@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { fetchSearchResults } from "../../store/slices/searchSlice";
 import {
@@ -20,7 +19,6 @@ import SearchIcon from "@mui/icons-material/Search";
 const SearchBar = () => {
   const [query, setQuery] = useState("");
   const dispatch = useDispatch();
-  const router = useRouter();
   const { results, loading } = useSelector((state) => state.search);
   const searchContainerRef = useRef(null);
   const [showResults, setShowResults] = useState(false);
@@ -87,7 +85,13 @@ const SearchBar = () => {
             ),
           },
         }}
-        sx={{ width: "300px" }}
+        sx={{
+          width: {
+            xs: 180,
+            sm: 240,
+            md: 300,
+          },
+        }}
       />
       {showResults && (
         <Paper
@@ -121,7 +125,7 @@ const SearchBar = () => {
           )}
           {!loading && results.length === 0 && query.trim() && (
             <Box sx={{ p: 2, textAlign: "center" }}>
-              <ListItemText primary="No products found." />
+              <ListItemText primary='No products found.' />
             </Box>
           )}
         </Paper>

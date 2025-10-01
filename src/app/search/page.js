@@ -14,7 +14,7 @@ const SearchResultsPage = () => {
   return (
     <Container sx={{ py: 4 }}>
       <Typography variant="h4" component="h1" gutterBottom>
-        Search Results for "{query}"
+        Search Results for &quot;{query}&quot;
       </Typography>
       {loading && <LoadingSpinner />}
       {error && <Typography color="error">{error}</Typography>}
