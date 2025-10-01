@@ -23,9 +23,7 @@ const SearchResultsPage = () => {
           {results.length > 0 ? (
             <Grid container spacing={4}>
               {results.map((product) => (
-                <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
-                  <ProductCard product={product} />
-                </Grid>
+                <ProductCard product={product} key={product.id} />
               ))}
             </Grid>
           ) : (

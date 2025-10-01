@@ -24,7 +24,7 @@ export default function FeaturedProducts() {
 
   // displays all products for now
   return (
-    <Container maxWidth="lg" sx={{ my: 8 }}>
+    <Container maxWidth="lg" sx={{ my: 4 }}>
       <Typography variant="h4" component="h2" gutterBottom fontWeight="bold">
         Featured Products
       </Typography>
@@ -33,9 +33,9 @@ export default function FeaturedProducts() {
       ) : products.length === 0 ? (
         <NoProductsFound />
       ) : (
-        <Grid container spacing={6}>
+        <Grid container spacing={4}>
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard product={product} key={product.id} />
           ))}
         </Grid>
       )}

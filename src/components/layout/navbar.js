@@ -106,7 +106,7 @@ export default function Navbar() {
               <Button
                 component={Link}
                 href="/register"
-                color="primary"
+                color="warning"
                 variant="contained"
                 sx={{ display: { xs: "none", md: "inline-flex" } }}
               >

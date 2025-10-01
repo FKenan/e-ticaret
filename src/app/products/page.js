@@ -23,7 +23,7 @@ export default function Page() {
   }, [dispatch, loading, products.length]);
 
   return (
-    <Container maxWidth="lg" sx={{ my: 8 }}>
+    <Container maxWidth="lg" sx={{ my: 4 }}>
       <Typography variant="h4" component="h2" gutterBottom fontWeight="bold">
         All Products
       </Typography>
@@ -32,9 +32,9 @@ export default function Page() {
       ) : products.length === 0 ? (
         <NoProductFound />
       ) : (
-        <Grid container spacing={6}>
+        <Grid container spacing={4}>
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard product={product} key={product.id} />
           ))}
         </Grid>
       )}

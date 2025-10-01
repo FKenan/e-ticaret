@@ -1,13 +1,16 @@
 "use client";
 import { memo } from "react";
 import {
-  Grid,
+  Card,
   CardMedia,
   CardContent,
   Typography,
   Button,
   Box,
   IconButton,
+  CardActions,
+  Rating,
+  Grid,
 } from "@mui/material";
 import Link from "next/link";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -62,93 +65,93 @@ function ProductCard({ product }) {
   };
 
   return (
-    <Grid size={{ sm: 12, md: 6, lg: 4 }}>
-      <Link
-        href={`/products/${product.id}`}
-        style={{ textDecoration: "none", color: "inherit", flexGrow: 1 }}
+    <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+      <Card
+        sx={{
+          height: "100%",
+          display: "flex",
+          boxShadow: (theme) => theme.shadows[8],
+          flexDirection: "column",
+          transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+          "&:hover": {
+            transform: "translateY(-5px)",
+          },
+        }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            padding: 1,
-            height: "100%",
-          }}
-        >
-          <CardMedia
-            component="img"
-            loading="lazy"
-            sx={{
-              width: 150,
-              height: 150,
-              objectFit: "contain",
-            }}
-            image={product.image}
-            alt={product.name}
-          />
-          <CardContent
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              textAlign: "left",
-              width: "100%",
-              height: "100%",
-              position: "relative",
-            }}
-          >
-            <Box
+        <Box sx={{ position: "relative" }}>
+          <Link href={`/products/${product.id}`} passHref>
+            <CardMedia
+              component="img"
+              loading="lazy"
+              image={product.image}
+              alt={product.name}
               sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
+                height: 200,
+                objectFit: "contain",
+                cursor: "pointer",
+              }}
+            />
+          </Link>
+          <IconButton
+            aria-label="add to wishlist"
+            onClick={handleAddToWishlist}
+            sx={{
+              position: "absolute",
+              top: 8,
+              right: 8,
+              backgroundColor: "white",
+              "&:hover": {
+                backgroundColor: "#f0f0f0",
+              },
+            }}
+            color={isInWishlist ? "error" : "default"}
+          >
+            {isInWishlist ? <FavoriteIcon /> : <FavoriteBorderOutlinedIcon />}
+          </IconButton>
+        </Box>
+        <CardContent sx={{ flexGrow: 1 }}>
+          <Link
+            href={`/products/${product.id}`}
+            passHref
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Typography
+              gutterBottom
+              variant="h6"
+              component="h2"
+              fontWeight="bold"
+              sx={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: "2",
+                WebkitBoxOrient: "vertical",
               }}
             >
-              <Typography
-                gutterBottom
-                variant="h6"
-                component="div"
-                fontWeight="bold"
-                sx={{ flexGrow: 1 }}
-              >
-                {product.name}
-              </Typography>
-              <IconButton
-                aria-label="add to wishlist"
-                size="small"
-                onClick={handleAddToWishlist}
-                color={isInWishlist ? "error" : "default"}
-              >
-                {isInWishlist ? (
-                  <FavoriteIcon />
-                ) : (
-                  <FavoriteBorderOutlinedIcon />
-                )}
-              </IconButton>
-            </Box>
-            <Box>
-              <Typography
-                variant="h5"
-                color="text.secondary"
-                gutterBottom
-                fontWeight="bold"
-              >
-                ${product.price.toFixed(2)}
-              </Typography>
-              <Button
-                variant="contained"
-                color="warning"
-                sx={{ whiteSpace: "nowrap" }}
-                onClick={handleAddToCart}
-              >
-                Add to cart
-              </Button>
-            </Box>
-          </CardContent>
-        </Box>
-      </Link>
+              {product.name}
+            </Typography>
+          </Link>
+          <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+            <Rating name="read-only" value={product.rating || 4.5} readOnly />
+            <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
+              ({product.reviewCount || 0})
+            </Typography>
+          </Box>
+          <Typography variant="h5" component="p" fontWeight="bold">
+            ${product.price.toFixed(2)}
+          </Typography>
+        </CardContent>
+        <CardActions sx={{ justifyContent: "center", paddingBottom: 2 }}>
+          <Button
+            variant="contained"
+            color="warning"
+            onClick={handleAddToCart}
+            fullWidth
+          >
+            Add to Cart
+          </Button>
+        </CardActions>
+      </Card>
     </Grid>
   );
 }
