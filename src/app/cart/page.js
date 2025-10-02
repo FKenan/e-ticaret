@@ -44,6 +44,19 @@ export default function CartPage() {
     }
   }, [dispatch, userId]);
 
+  if (!userInfo) {
+    return (
+      <Container sx={{ py: 8, textAlign: "center" }}>
+        <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom>
+          My Cart
+        </Typography>
+        <Paper sx={{ p: 4 }}>
+          <Typography variant="h6">Please log in to view your cart.</Typography>
+        </Paper>
+      </Container>
+    );
+  }
+
   const handleRemoveItem = (productId, quantity) => {
     if (userId) {
       dispatch(removeFromCart({ userId, productId, amount: quantity }));

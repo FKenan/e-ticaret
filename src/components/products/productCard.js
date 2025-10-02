@@ -83,7 +83,7 @@ function ProductCard({ product }) {
             <CardMedia
               component="img"
               loading="lazy"
-              image={product.image}
+              image={product.image || "https://placehold.co/600x400.png"}
               alt={product.name}
               sx={{
                 height: 200,
@@ -99,9 +99,9 @@ function ProductCard({ product }) {
               position: "absolute",
               top: 8,
               right: 8,
-              backgroundColor: "white",
+              backgroundColor: "background.paper",
               "&:hover": {
-                backgroundColor: "#f0f0f0",
+                backgroundColor: "action.hover",
               },
             }}
             color={isInWishlist ? "error" : "default"}

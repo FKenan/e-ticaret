@@ -34,7 +34,7 @@ function CategoryCard({ category }) {
             <CardMedia
               component="img"
               height="200"
-              image={category.imageUrl}
+              image={category.imageUrl || "https://placehold.co/600x400.png"}
               alt={category.name}
               loading="lazy"
               sx={{ objectFit: "contain", p: 2 }}
