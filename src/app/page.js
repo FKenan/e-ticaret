@@ -1,11 +1,12 @@
 import Banner from "@/components/banner/banner";
 import FeaturedProducts from "@/components/products/featuredProducts";
+import { Box } from "@mui/material";
 
 export default function Home() {
   return (
-    <div>
+    <Box component="main">
       <Banner />
       <FeaturedProducts />
-    </div>
+    </Box>
   );
 }

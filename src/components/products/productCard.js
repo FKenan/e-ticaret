@@ -8,13 +8,14 @@ import {
   Button,
   Box,
   IconButton,
-  CardActions,
   Rating,
-  Grid,
+  Tooltip,
+  alpha,
 } from "@mui/material";
 import Link from "next/link";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addToCart } from "../../store/slices/cartSlice";
@@ -46,9 +47,11 @@ function ProductCard({ product }) {
       );
       if (wishlistItem) {
         dispatch(removeFromWishlist(wishlistItem.id));
+        toast.success("Removed from wishlist!");
       }
     } else {
       dispatch(addToWishlist({ UserId: user.id, ProductId: product.id }));
+      toast.success("Added to wishlist!");
     }
   };
 
@@ -62,36 +65,45 @@ function ProductCard({ product }) {
     dispatch(
       addToCart({ userId: user.id, productId: product.id, quantity: 1 })
     );
+    toast.success("Added to cart!");
   };
 
   return (
-    <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-      <Card
-        sx={{
-          height: "100%",
-          display: "flex",
-          boxShadow: (theme) => theme.shadows[8],
-          flexDirection: "column",
-          transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
-          "&:hover": {
-            transform: "translateY(-5px)",
-          },
-        }}
-      >
-        <Box sx={{ position: "relative" }}>
-          <Link href={`/products/${product.id}`} passHref>
-            <CardMedia
-              component="img"
-              loading="lazy"
-              image={product.image || "https://placehold.co/600x400.png"}
-              alt={product.name}
-              sx={{
-                height: 200,
-                objectFit: "contain",
-                cursor: "pointer",
-              }}
-            />
-          </Link>
+    <Card
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+        "&:hover": {
+          transform: "translateY(-8px)",
+          boxShadow: (theme) => theme.shadows[12],
+        },
+        borderRadius: 2,
+        overflow: "hidden",
+      }}
+    >
+      <Box sx={{ position: "relative", pt: "100%" }}>
+        <Link href={`/products/${product.id}`} passHref>
+          <CardMedia
+            component="img"
+            loading="lazy"
+            image={product.image || "https://placehold.co/600x400.png"}
+            alt={product.name}
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              cursor: "pointer",
+            }}
+          />
+        </Link>
+        <Tooltip
+          title={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+        >
           <IconButton
             aria-label="add to wishlist"
             onClick={handleAddToWishlist}
@@ -99,60 +111,80 @@ function ProductCard({ product }) {
               position: "absolute",
               top: 8,
               right: 8,
-              backgroundColor: "background.paper",
+              backgroundColor: (theme) =>
+                alpha(theme.palette.background.paper, 0.7),
               "&:hover": {
-                backgroundColor: "action.hover",
+                backgroundColor: (theme) => theme.palette.background.paper,
               },
             }}
             color={isInWishlist ? "error" : "default"}
           >
             {isInWishlist ? <FavoriteIcon /> : <FavoriteBorderOutlinedIcon />}
           </IconButton>
-        </Box>
-        <CardContent sx={{ flexGrow: 1 }}>
-          <Link
-            href={`/products/${product.id}`}
-            passHref
-            style={{ textDecoration: "none", color: "inherit" }}
+        </Tooltip>
+      </Box>
+      <CardContent sx={{ flexGrow: 1, p: 2 }}>
+        <Link
+          href={`/products/${product.id}`}
+          passHref
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <Typography
+            gutterBottom
+            variant="subtitle1"
+            component="h2"
+            fontWeight="600"
+            sx={{
+              height: "3em",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitLineClamp: "2",
+              WebkitBoxOrient: "vertical",
+            }}
           >
-            <Typography
-              gutterBottom
-              variant="h6"
-              component="h2"
-              fontWeight="bold"
-              sx={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                display: "-webkit-box",
-                WebkitLineClamp: "2",
-                WebkitBoxOrient: "vertical",
-              }}
-            >
-              {product.name}
-            </Typography>
-          </Link>
-          <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-            <Rating name="read-only" value={product.rating || 4.5} readOnly />
-            <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
-              ({product.reviewCount || 0})
-            </Typography>
-          </Box>
-          <Typography variant="h5" component="p" fontWeight="bold">
-            ${product.price.toFixed(2)}
+            {product.name}
           </Typography>
-        </CardContent>
-        <CardActions sx={{ justifyContent: "center", paddingBottom: 2 }}>
-          <Button
-            variant="contained"
-            color="warning"
-            onClick={handleAddToCart}
-            fullWidth
-          >
-            Add to Cart
-          </Button>
-        </CardActions>
-      </Card>
-    </Grid>
+        </Link>
+        <Box sx={{ display: "flex", alignItems: "center", my: 1 }}>
+          <Rating
+            name="read-only"
+            value={product.rating || 4.5}
+            readOnly
+            precision={0.5}
+            size="small"
+          />
+          <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
+            ({product.reviewCount || 0})
+          </Typography>
+        </Box>
+        <Typography
+          variant="h5"
+          component="p"
+          fontWeight="bold"
+          color="warning.main"
+        >
+          ${product.price.toFixed(2)}
+        </Typography>
+      </CardContent>
+      <Box sx={{ p: 2, pt: 0 }}>
+        <Button
+          variant="contained"
+          color="warning"
+          onClick={handleAddToCart}
+          fullWidth
+          startIcon={<AddShoppingCartIcon />}
+          sx={{
+            py: 1.5,
+            fontWeight: "bold",
+            borderRadius: 1.5,
+            textTransform: "none",
+          }}
+        >
+          Add to Cart
+        </Button>
+      </Box>
+    </Card>
   );
 }
 

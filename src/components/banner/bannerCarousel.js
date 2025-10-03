@@ -1,5 +1,5 @@
-import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
+import { Box, Paper, Typography } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Image from "next/image";
@@ -22,17 +22,34 @@ const items = [
   },
 ];
 
+const overlayStyles = {
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "flex-end",
+  alignItems: "center",
+  color: "primary.contrastText",
+  textShadow: "1px 1px 3px rgba(0,0,0,0.7)",
+  paddingBottom: 4,
+};
+
 function BannerCarousel() {
   return (
     <Carousel
-      showArrows={true}
-      infiniteLoop={true}
-      autoPlay={true}
+      showArrows
+      infiniteLoop
+      autoPlay
       showThumbs={false}
       interval={5000}
     >
       {items.map((item, i) => (
-        <Paper key={i} elevation={0} sx={{ height: "400px", position: 'relative' }}>
+        <Paper
+          key={item.name}
+          elevation={0}
+          sx={{ height: "400px", position: "relative" }}
+        >
           <Image
             src={item.image}
             alt={item.name}
@@ -40,20 +57,7 @@ function BannerCarousel() {
             style={{ objectFit: "cover" }}
             priority={i === 0}
           />
-          <Box
-            sx={{
-              position: 'absolute',
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-end",
-              alignItems: "center",
-              color: "white",
-              textShadow: "1px 1px 3px rgba(0,0,0,0.7)",
-              paddingBottom: 4
-            }}
-          >
+          <Box sx={overlayStyles}>
             <Typography variant="h4">{item.name}</Typography>
             <Typography variant="body1">{item.description}</Typography>
           </Box>
@@ -64,3 +68,4 @@ function BannerCarousel() {
 }
 
 export default React.memo(BannerCarousel);
+

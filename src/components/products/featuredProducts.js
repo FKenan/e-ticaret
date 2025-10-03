@@ -1,5 +1,5 @@
 "use client";
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid, Typography, Box } from "@mui/material";
 import ProductCard from "./productCard";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,28 +17,41 @@ export default function FeaturedProducts() {
   const loading = useSelector(selectProductLoading);
 
   useEffect(() => {
+    // Fetch products only if the list is empty.
     if (products.length === 0) {
       dispatch(fetchProducts());
     }
   }, [dispatch, products.length]);
 
-  // displays all products for now
+  const featured = products.slice(0, 8);
+
   return (
-    <Container maxWidth="lg" sx={{ my: 4 }}>
-      <Typography variant="h4" component="h2" gutterBottom fontWeight="bold">
-        Featured Products
-      </Typography>
-      {loading ? (
-        <LoadingSpinner />
-      ) : products.length === 0 ? (
-        <NoProductsFound />
-      ) : (
-        <Grid container spacing={4}>
-          {products.map((product) => (
-            <ProductCard product={product} key={product.id} />
-          ))}
-        </Grid>
-      )}
-    </Container>
+    <Box sx={{ bgcolor: "background.paper", py: 8 }}>
+      <Container maxWidth="xl">
+        <Typography
+          variant="h4"
+          component="h2"
+          gutterBottom
+          fontWeight="bold"
+          textAlign="center"
+          sx={{ mb: 6 }}
+        >
+          Featured Products
+        </Typography>
+        {loading ? (
+          <LoadingSpinner />
+        ) : featured.length === 0 ? (
+          <NoProductsFound />
+        ) : (
+          <Grid container spacing={4}>
+            {featured.map((product) => (
+              <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={product.id}>
+                <ProductCard product={product} />
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </Container>
+    </Box>
   );
 }
