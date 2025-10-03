@@ -1,41 +1,53 @@
 "use client";
 import CategoryCard from "@/components/categories/categoryCard";
-import NoProductFound from "@/components/products/NoProductsFound";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 import {
   fetchCategories,
   selectCategories,
   selectCategoryLoading,
 } from "@/store/slices/categorySlice";
-import LoadingSpinner from "@/components/common/LoadingSpinner";
-import { Box, Grid, Typography } from "@mui/material";
+import { Container, Grid, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function Page() {
+export default function CategoriesPage() {
   const dispatch = useDispatch();
   const categories = useSelector(selectCategories);
   const loading = useSelector(selectCategoryLoading);
 
   useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
+    if (categories.length === 0) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, categories.length]);
 
   return (
-    <Box sx={{ py: 4 }}>
-      <Typography variant="h3" component="h1" gutterBottom fontWeight="bold">
-        Categories
+    <Container maxWidth="xl" sx={{ my: 2 }}>
+      <Typography
+        variant="h2"
+        component="h1"
+        gutterBottom
+        fontWeight="bold"
+        textAlign="center"
+        sx={{ mb: 5 }}
+      >
+        All Categories
       </Typography>
-      {loading ? (
+      {loading && categories.length === 0 ? (
         <LoadingSpinner />
-      ) : categories.length === 0 ? (
-        <NoProductFound />
       ) : (
-        <Grid container spacing={4}>
-          {categories.map((category) => (
-            <CategoryCard key={category.id} category={category} />
-          ))}
+        <Grid container spacing={4} justifyContent="center">
+          {categories.length > 0
+            ? categories.map((category) => (
+                <CategoryCard key={category.id} category={category} />
+              ))
+            : !loading && (
+                <Typography variant="h6" sx={{ mt: 5, textAlign: "center" }}>
+                  No categories found.
+                </Typography>
+              )}
         </Grid>
       )}
-    </Box>
+    </Container>
   );
 }

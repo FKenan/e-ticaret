@@ -1,41 +1,76 @@
 "use client";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import NoProductsFound from "./NoProductsFound";
 import {
   fetchProductByCategory,
   selectProductLoading,
   selectProductsByCategory,
 } from "@/store/slices/productSlice";
-import { Box, Grid, Typography } from "@mui/material";
+import {
+  selectCategories,
+  fetchCategories,
+} from "@/store/slices/categorySlice";
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import ProductCard from "./productCard";
+import NoProductsFound from "./NoProductsFound";
 import LoadingSpinner from "../common/LoadingSpinner";
 
 export default function ProductsByCategory({ id }) {
   const dispatch = useDispatch();
+
   const products = useSelector(selectProductsByCategory);
   const loading = useSelector(selectProductLoading);
+  const categories = useSelector(selectCategories);
+
+  const category = categories.find((cat) => cat.id === parseInt(id));
 
   useEffect(() => {
     dispatch(fetchProductByCategory(id));
-  }, [dispatch, id]);
+
+    if (categories.length === 0) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, id, categories.length]);
+
+  const renderContent = () => {
+    if (loading) {
+      return <LoadingSpinner />;
+    }
+
+    if (products.length === 0) {
+      return <NoProductsFound />;
+    }
+
+    return (
+      <Grid container spacing={4}>
+        {products.map((product) => (
+          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={product.id}>
+            <ProductCard product={product} key={product.id} />
+          </Grid>
+        ))}
+      </Grid>
+    );
+  };
 
   return (
-    <Box>
-      <Typography variant="h4" component="h2" gutterBottom fontWeight="bold">
-        Products in Category
+    <Container maxWidth="xl" sx={{ py: 5 }}>
+      <Typography
+        variant="h2"
+        component="h1"
+        gutterBottom
+        fontWeight="bold"
+        textAlign="center"
+        sx={{ mb: 5 }}
+      >
+        {category && category.name}
       </Typography>
-      {loading ? (
-        <LoadingSpinner />
-      ) : products.length === 0 ? (
-        <NoProductsFound />
-      ) : (
-        <Grid container spacing={4}>
-          {products.map((product) => (
-            <ProductCard product={product} key={product.id} />
-          ))}
-        </Grid>
-      )}
-    </Box>
+      {renderContent()}
+    </Container>
   );
 }

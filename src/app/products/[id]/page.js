@@ -6,7 +6,7 @@ export default async function ProductDetailPage({ params }) {
   const { id } = await params;
 
   return (
-    <Box sx={{ flexGrow: 1, px: 2, py: 8 }}>
+    <Box sx={{ flexGrow: 1, p: 2 }}>
       <ProductDetail id={id} />
     </Box>
   );

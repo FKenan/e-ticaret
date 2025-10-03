@@ -1,20 +1,19 @@
-'use client';
-import { memo } from 'react';
-import { Typography, Button, Grid } from '@mui/material';
-import BannerCarousel from './bannerCarousel';
+"use client";
+import { memo } from "react";
+import { Typography, Button, Grid } from "@mui/material";
+import BannerCarousel from "./bannerCarousel";
 
 const Banner = () => {
   return (
-    <Grid container spacing={2} sx={{ my: 4, alignItems: 'center' }}>
+    <Grid container spacing={2} sx={{ my: 4, alignItems: "center", px: 2 }}>
       <Grid
         size={{ xs: 12, md: 6 }}
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          textAlign: 'left',
-          p: 4,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          textAlign: "left",
         }}
       >
         <Typography variant="h2" component="h1">

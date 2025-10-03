@@ -1,13 +1,15 @@
+"use client";
 import {
+  Box,
   Card,
   CardActionArea,
-  CardContent,
   CardMedia,
   Typography,
   Grid,
+  alpha,
 } from "@mui/material";
 import Link from "next/link";
-import React, { memo } from "react";
+import { memo } from "react";
 
 function CategoryCard({ category }) {
   return (
@@ -19,44 +21,53 @@ function CategoryCard({ category }) {
       >
         <Card
           sx={{
-            height: "100%",
-            display: "flex",
-            boxShadow: (theme) => theme.shadows[8],
-            flexDirection: "column",
+            position: "relative",
+            height: 250,
+            borderRadius: 2,
+            overflow: "hidden",
             transition:
               "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
             "&:hover": {
-              transform: "translateY(-5px)",
+              transform: "scale(1.05)",
+              boxShadow: (theme) => theme.shadows[10],
             },
           }}
         >
-          <CardActionArea>
+          <CardActionArea sx={{ height: "100%" }}>
             <CardMedia
               component="img"
-              height="200"
               image={category.imageUrl || "https://placehold.co/600x400.png"}
               alt={category.name}
-              loading="lazy"
-              sx={{ objectFit: "contain", p: 2 }}
+              sx={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
             />
-            <CardContent>
-              <Typography
-                gutterBottom
-                variant="h6"
-                component="div"
-                align="center"
-                sx={{
-                  fontWeight: "bold",
-                  color: "text.primary",
-                }}
-              >
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                width: "100%",
+                bgcolor: (theme) => alpha(theme.palette.common.black, 0.6),
+                color: "common.white",
+                p: 2,
+                textAlign: "center",
+              }}
+            >
+              <Typography variant="h6" component="div" fontWeight="bold">
                 {category.name}
               </Typography>
-            </CardContent>
+            </Box>
           </CardActionArea>
         </Card>
       </Link>
     </Grid>
   );
 }
+
 export default memo(CategoryCard);

@@ -68,4 +68,3 @@ function BannerCarousel() {
 }
 
 export default React.memo(BannerCarousel);
-

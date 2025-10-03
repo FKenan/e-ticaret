@@ -23,7 +23,7 @@ export default function Page() {
   }, [dispatch, loading, products.length]);
 
   return (
-    <Container maxWidth="lg" sx={{ my: 4 }}>
+    <Container maxWidth="lg" sx={{ my: 2 }}>
       <Typography variant="h4" component="h2" gutterBottom fontWeight="bold">
         All Products
       </Typography>
