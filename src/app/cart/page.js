@@ -15,6 +15,7 @@ import LoadingSpinner from "@/components/common/LoadingSpinner";
 import CartItem from "@/components/cart/cartItem";
 import EmptyCart from "@/components/cart/emptyCart";
 import OrderSummary from "@/components/cart/orderSummary";
+import LoginPrompt from "@/components/cart/loginPrompt";
 
 export default function CartPage() {
   const dispatch = useDispatch();
@@ -42,6 +43,10 @@ export default function CartPage() {
       );
     }
   };
+
+  if (!user) {
+    return <LoginPrompt />;
+  }
 
   if (status === "loading") {
     return <LoadingSpinner />;

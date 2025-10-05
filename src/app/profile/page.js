@@ -31,17 +31,17 @@ import { deepOrange } from "@mui/material/colors";
 
 const menuItems = [
   {
-    text: "Siparişlerim",
+    text: "My Orders",
     icon: <ShoppingBagIcon />,
     href: "/profile/orders",
   },
   {
-    text: "İstek Listem",
+    text: "My Wishlist",
     icon: <FavoriteIcon />,
     href: "/profile/wishlist",
   },
   {
-    text: "Adreslerim",
+    text: "My Addresses",
     icon: <LocationOnIcon />,
     href: "/profile/addresses",
   },
@@ -103,7 +103,7 @@ export default function ProfilePage() {
               onClick={handleLogout}
               fullWidth
             >
-              Çıkış Yap
+              Logout
             </Button>
           </Paper>
         </Grid>
@@ -112,7 +112,7 @@ export default function ProfilePage() {
         <Grid size={{ xs: 12, md: 8 }}>
           <Paper elevation={3} sx={{ p: { xs: 2, md: 3 } }}>
             <Typography variant="h6" component="h2" sx={{ mb: 2, px: 2 }}>
-              Hesap Yönetimi
+              Account Management
             </Typography>
             <Divider sx={{ mb: 1 }} />
             <List>
