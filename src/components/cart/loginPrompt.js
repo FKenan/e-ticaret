@@ -1,55 +1,36 @@
-import React, { memo } from "react";
-import { Box, Typography, Button, Stack } from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import React from "react";
+import { Box, Typography, Button } from "@mui/material";
+import { LockPerson as LockPersonIcon } from "@mui/icons-material";
 import Link from "next/link";
 
-const LoginPrompt = () => {
+export default function LoginPrompt() {
   return (
     <Box
+      textAlign="center"
       sx={{
+        py: 8,
+        minHeight: "calc(100vh - 200px)",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         justifyContent: "center",
-        textAlign: "center",
-        py: 8,
-        px: 2,
-        minHeight: "400px",
+        alignItems: "center",
       }}
     >
-      <ShoppingCartIcon sx={{ fontSize: 80, color: "warning.main", mb: 3 }} />
-      <Typography variant="h4" component="h2" gutterBottom>
-        Your Cart is Waiting!
+      <LockPersonIcon sx={{ fontSize: 80, color: "text.secondary", mb: 2 }} />
+      <Typography variant="h5" gutterBottom>
+        Please Log In
       </Typography>
-      <Typography
-        variant="h6"
-        color="text.secondary"
-        sx={{ mb: 4, maxWidth: "450px" }}
+      <Typography color="text.secondary" sx={{ mb: 3 }}>
+        Log in to see your cart and start shopping.
+      </Typography>
+      <Button
+        component={Link}
+        href="/login"
+        variant="contained"
+        color="warning"
       >
-        Log in or create an account to see your items and check out.
-      </Typography>
-      <Stack direction="row" spacing={2}>
-        <Button
-          component={Link}
-          href="/login"
-          variant="contained"
-          size="large"
-          color="warning"
-        >
-          Login
-        </Button>
-        <Button
-          component={Link}
-          href="/register"
-          variant="outlined"
-          size="large"
-          color="warning"
-        >
-          Create Account
-        </Button>
-      </Stack>
+        Go to Login
+      </Button>
     </Box>
   );
-};
-
-export default memo(LoginPrompt);
+}

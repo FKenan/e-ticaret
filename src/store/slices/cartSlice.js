@@ -22,12 +22,17 @@ export const fetchCart = createAsyncThunk(
 // Sepete ürün ekleyen thunk
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
-  async ({ userId, productId, quantity = 1 }, { dispatch, rejectWithValue }) => {
+  async (
+    { userId, productId, quantity = 1 },
+    { dispatch, rejectWithValue }
+  ) => {
     try {
       await requests.cart.addItem(userId, productId, quantity);
       const response = await dispatch(fetchCart(userId));
+      toast.success("Product added to cart!");
       return response.payload;
     } catch (error) {
+      toast.error("Failed to add product to cart.");
       return rejectWithValue(error.response.data);
     }
   }
@@ -38,14 +43,12 @@ export const removeFromCart = createAsyncThunk(
   "cart/removeFromCart",
   async ({ userId, productId, amount = 1 }, { dispatch, rejectWithValue }) => {
     try {
-      await requests.cart.decreaseItem(
-        userId,
-        productId,
-        amount
-      );
+      await requests.cart.decreaseItem(userId, productId, amount);
       const response = await dispatch(fetchCart(userId));
+      toast.success("Product removed from cart.");
       return response.payload;
     } catch (error) {
+      toast.error("Failed to remove product from cart.");
       return rejectWithValue(error.response.data);
     }
   }
@@ -56,8 +59,10 @@ export const clearCart = createAsyncThunk(
   async (userId, { rejectWithValue }) => {
     try {
       await requests.cart.clear(userId);
+      toast.success("Cart cleared successfully.");
       return userId;
     } catch (error) {
+      toast.error("Failed to clear cart.");
       return rejectWithValue(error.response.data);
     }
   }
@@ -94,7 +99,6 @@ const cartSlice = createSlice({
       .addCase(addToCart.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.items = action.payload;
-        toast.success("Product added to cart!");
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.status = "failed";
@@ -118,7 +122,7 @@ const cartSlice = createSlice({
       })
       .addCase(clearCart.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.items = []; // Clear the cart items
+        state.items = [];
       })
       .addCase(clearCart.rejected, (state, action) => {
         state.status = "failed";

@@ -34,7 +34,9 @@ export default function Page() {
       ) : (
         <Grid container spacing={4}>
           {products.map((product) => (
-            <ProductCard product={product} key={product.id} />
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={product.id}>
+              <ProductCard product={product} key={product.id} />
+            </Grid>
           ))}
         </Grid>
       )}

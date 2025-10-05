@@ -47,11 +47,9 @@ function ProductCard({ product }) {
       );
       if (wishlistItem) {
         dispatch(removeFromWishlist(wishlistItem.id));
-        toast.success("Removed from wishlist!");
       }
     } else {
       dispatch(addToWishlist({ UserId: user.id, ProductId: product.id }));
-      toast.success("Added to wishlist!");
     }
   };
 
@@ -65,7 +63,6 @@ function ProductCard({ product }) {
     dispatch(
       addToCart({ userId: user.id, productId: product.id, quantity: 1 })
     );
-    toast.success("Added to cart!");
   };
 
   return (
