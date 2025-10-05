@@ -2,28 +2,56 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   Container,
   Typography,
-  Box,
   Grid,
-  Card,
-  Divider,
+  Paper,
+  Avatar,
   Button,
-  CardActionArea,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
 } from "@mui/material";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
-import { logout } from "../../store/slices/userSlice";
-import ShoppingBag from "@mui/icons-material/ShoppingBag";
-import Favorite from "@mui/icons-material/Favorite";
-import LocationOn from "@mui/icons-material/LocationOn";
-import Payment from "@mui/icons-material/Payment";
-import Link from "next/link";
+import {
+  logout,
+  selectIsAuthenticated,
+  selectUserInfo,
+  selectUserLoading,
+} from "../../store/slices/userSlice";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { deepOrange } from "@mui/material/colors";
+
+const menuItems = [
+  {
+    text: "Siparişlerim",
+    icon: <ShoppingBagIcon />,
+    href: "/profile/orders",
+  },
+  {
+    text: "İstek Listem",
+    icon: <FavoriteIcon />,
+    href: "/profile/wishlist",
+  },
+  {
+    text: "Adreslerim",
+    icon: <LocationOnIcon />,
+    href: "/profile/addresses",
+  },
+];
 
 export default function ProfilePage() {
-  const { userInfo, isAuthenticated, loading } = useSelector(
-    (state) => state.user
-  );
+  const userInfo = useSelector(selectUserInfo);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const loading = useSelector(selectUserLoading);
+
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -35,71 +63,71 @@ export default function ProfilePage() {
 
   const handleLogout = () => {
     dispatch(logout());
+    router.push("/");
   };
 
   if (loading || !isAuthenticated) {
     return <LoadingSpinner />;
   }
 
+  const getInitials = (firstName = "", lastName = "") => {
+    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+  };
+
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Box sx={{ textAlign: "center", mb: 4 }}>
-        <Typography variant="h3" component="h1" gutterBottom>
-          {userInfo?.firstName} {userInfo?.lastName}
-        </Typography>
-        <Typography variant="h6" color="text.secondary">
-          {userInfo?.email}
-        </Typography>
-      </Box>
-      <Grid container spacing={3} sx={{ mb: 4 }} justifyContent="center">
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <Card variant="outlined">
-            <CardActionArea
-              component={Link}
-              href="/profile/orders"
-              sx={{ p: 2, textAlign: "center" }}
+    <Container maxWidth="lg" sx={{ my: 5 }}>
+      <Grid container spacing={4}>
+        {/* User Info Card */}
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Paper elevation={3} sx={{ p: 3, textAlign: "center" }}>
+            <Avatar
+              sx={{
+                bgcolor: deepOrange[500],
+                width: 80,
+                height: 80,
+                fontSize: "2.5rem",
+                margin: "0 auto 16px",
+              }}
             >
-              <ShoppingBag sx={{ fontSize: 40 }} />
-              <Typography variant="h6">Orders</Typography>
-            </CardActionArea>
-          </Card>
+              {getInitials(userInfo?.firstName, userInfo?.lastName)}
+            </Avatar>
+            <Typography variant="h5" component="h1" gutterBottom>
+              {userInfo?.firstName} {userInfo?.lastName}
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+              {userInfo?.email}
+            </Typography>
+            <Button
+              variant="contained"
+              color="warning"
+              onClick={handleLogout}
+              fullWidth
+            >
+              Çıkış Yap
+            </Button>
+          </Paper>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <Card variant="outlined">
-            <CardActionArea
-              component={Link}
-              href="/profile/wishlist"
-              sx={{ p: 2, textAlign: "center" }}
-            >
-              <Favorite sx={{ fontSize: 40 }} />
-              <Typography variant="h6">Wishlist</Typography>
-            </CardActionArea>
-          </Card>
-        </Grid>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <Card variant="outlined">
-            <CardActionArea
-              component={Link}
-              href="/profile/addresses"
-              sx={{ p: 2, textAlign: "center" }}
-            >
-              <LocationOn sx={{ fontSize: 40 }} />
-              <Typography variant="h6">Addresses</Typography>
-            </CardActionArea>
-          </Card>
+
+        {/* Navigation Card */}
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Paper elevation={3} sx={{ p: { xs: 2, md: 3 } }}>
+            <Typography variant="h6" component="h2" sx={{ mb: 2, px: 2 }}>
+              Hesap Yönetimi
+            </Typography>
+            <Divider sx={{ mb: 1 }} />
+            <List>
+              {menuItems.map((item) => (
+                <ListItem key={item.text} disablePadding>
+                  <ListItemButton component={Link} href={item.href}>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </Paper>
         </Grid>
       </Grid>
-      <Divider />
-      <Box sx={{ textAlign: "end", mt: 4, mb: 10 }}>
-        <Button
-          variant="text"
-          color="warning"
-          onClick={handleLogout}
-          sx={{ fontSize: 24, fontWeight: "bold" }}
-        >
-          Log Out
-        </Button>
-      </Box>
     </Container>
   );
 }
