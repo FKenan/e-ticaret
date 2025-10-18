@@ -6,6 +6,7 @@ import Footer from "@/components/layout/footer";
 import Navbar from "@/components/layout/navbar";
 import ThemeRegistry from "@/components/themeRegistry";
 import { ToastContainer } from "react-toastify";
+import EducationBanner from "@/components/common/EducationBanner";
 
 export const metadata = {
   title: "Create Next App",
@@ -14,7 +15,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="tr">
+    <html lang="en">
       <body>
         <Container maxWidth="lg" sx={{ mb: 10 }} disableGutters>
           <ReduxProvider>
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
               {children}
               <Footer />
               <ToastContainer autoClose={1500} hideProgressBar />
+              <EducationBanner />
             </ThemeRegistry>
           </ReduxProvider>
         </Container>
