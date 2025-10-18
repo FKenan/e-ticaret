@@ -1,46 +1,89 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Typography, Box, Grid, Button } from "@mui/material";
+import {
+  Container,
+  Typography,
+  Box,
+  Grid,
+  Button,
+  CircularProgress,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import AddressCard from "@/components/profile/addressCard";
 import {
   getAddresses,
   selectAddresses,
   selectAddressLoading,
 } from "@/store/slices/addressSlice";
-import LoadingSpinner from "@/components/common/LoadingSpinner";
 import AddAddressModal from "@/components/profile/AddAddressModal";
 import { selectUserInfo } from "@/store/slices/userSlice";
-import NoProductsFound from "@/components/products/NoProductsFound";
 
 export default function AddressesPage() {
   const dispatch = useDispatch();
   const addresses = useSelector(selectAddresses);
   const loading = useSelector(selectAddressLoading);
   const userInfo = useSelector(selectUserInfo);
-  const [open, setOpen] = useState(false);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [addressToEdit, setAddressToEdit] = useState(null);
 
   useEffect(() => {
     if (userInfo?.id) {
       dispatch(getAddresses(userInfo.id));
     }
-  }, [dispatch, userInfo.id]);
+  }, [dispatch, userInfo?.id]);
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  const handleOpenModal = (address = null) => {
+    setAddressToEdit(address);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setAddressToEdit(null);
+  };
+
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
+          <CircularProgress />
+        </Box>
+      );
+    }
+
+    if (!addresses || addresses.length === 0) {
+      return (
+        <Typography variant="h6" align="center" sx={{ my: 5 }}>
+          You have no saved addresses.
+        </Typography>
+      );
+    }
+
+    return (
+      <Grid container spacing={3}>
+        {addresses.map((address) => (
+          <AddressCard
+            key={address.id}
+            address={address}
+            onEdit={() => handleOpenModal(address)}
+          />
+        ))}
+      </Grid>
+    );
+  };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           mb: 4,
+          flexWrap: "wrap",
+          gap: 2,
         }}
       >
         <Typography variant="h4" component="h1">
@@ -49,24 +92,20 @@ export default function AddressesPage() {
         <Button
           variant="contained"
           color="warning"
-          size="large"
-          onClick={handleOpen}
+          startIcon={<AddIcon />}
+          onClick={() => handleOpenModal()}
         >
           Add New Address
         </Button>
       </Box>
-      {addresses && addresses.length > 0 ? (
-        <Grid container spacing={3}>
-          {addresses.map((address) => (
-            <Grid size={{ xs: 12, sm: 12, md: 6 }} key={address.id}>
-              <AddressCard address={address} />
-            </Grid>
-          ))}
-        </Grid>
-      ) : (
-        <NoProductsFound message="Kayıtlı adresiniz bulunmamaktadır." />
-      )}
-      <AddAddressModal open={open} handleClose={handleClose} />
+
+      {renderContent()}
+
+      <AddAddressModal
+        open={isModalOpen}
+        handleClose={handleCloseModal}
+        addressToEdit={addressToEdit}
+      />
     </Container>
   );
 }

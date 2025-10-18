@@ -31,8 +31,8 @@ export const updateAddress = createAsyncThunk(
   "addresses/update",
   async ({ id, updatedAddress }, { rejectWithValue }) => {
     try {
-      const response = await requests.addresses.update(id, updatedAddress);
-      return response;
+      await requests.addresses.update(id, updatedAddress);
+      return updatedAddress;
     } catch (error) {
       return rejectWithValue(error.response);
     }

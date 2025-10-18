@@ -1,7 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal, Box, Typography, TextField, Button, Grid } from "@mui/material";
-import { addAddress } from "@/store/slices/addressSlice";
+import {
+  Modal,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  CircularProgress,
+} from "@mui/material";
+import { addAddress, updateAddress } from "@/store/slices/addressSlice";
 import { selectUserInfo } from "@/store/slices/userSlice";
 
 const style = {
@@ -9,21 +17,42 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: "90%",
+  maxWidth: 500,
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
+  borderRadius: 2,
 };
 
-export default function AddAddressModal({ open, handleClose }) {
+export default function AddAddressModal({ open, handleClose, addressToEdit }) {
   const dispatch = useDispatch();
   const userInfo = useSelector(selectUserInfo);
+  const { loading } = useSelector((state) => state.addresses);
+
   const [formData, setFormData] = useState({
     city: "",
     district: "",
     fullAddress: "",
-    userId: userInfo?.id,
   });
+
+  const isEditMode = Boolean(addressToEdit);
+
+  useEffect(() => {
+    if (isEditMode) {
+      setFormData({
+        city: addressToEdit.city || "",
+        district: addressToEdit.district || "",
+        fullAddress: addressToEdit.fullAddress || "",
+      });
+    } else {
+      setFormData({
+        city: "",
+        district: "",
+        fullAddress: "",
+      });
+    }
+  }, [addressToEdit, open]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,19 +60,32 @@ export default function AddAddressModal({ open, handleClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addAddress(formData));
-    handleClose();
+    const addressData = { ...formData, userId: userInfo.id };
+    if (isEditMode) {
+      dispatch(
+        updateAddress({
+          id: addressToEdit.id,
+          updatedAddress: { id: addressToEdit.id, ...addressData },
+        })
+      ).then(() => {
+        handleClose();
+      });
+    } else {
+      dispatch(addAddress(addressData)).then(() => {
+        handleClose();
+      });
+    }
   };
 
   return (
     <Modal
       open={open}
       onClose={handleClose}
-      aria-labelledby="add-address-modal-title"
+      aria-labelledby="address-modal-title"
     >
       <Box sx={style} component="form" onSubmit={handleSubmit}>
-        <Typography id="add-address-modal-title" variant="h6" component="h2">
-          Add New Address
+        <Typography id="address-modal-title" variant="h6" component="h2">
+          {isEditMode ? "Edit Address" : "Add New Address"}
         </Typography>
         <Grid container spacing={2} sx={{ mt: 2 }}>
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -53,6 +95,7 @@ export default function AddAddressModal({ open, handleClose }) {
               variant="outlined"
               fullWidth
               required
+              value={formData.city}
               onChange={handleChange}
             />
           </Grid>
@@ -63,6 +106,7 @@ export default function AddAddressModal({ open, handleClose }) {
               variant="outlined"
               fullWidth
               required
+              value={formData.district}
               onChange={handleChange}
             />
           </Grid>
@@ -75,16 +119,25 @@ export default function AddAddressModal({ open, handleClose }) {
               required
               multiline
               rows={3}
+              value={formData.fullAddress}
               onChange={handleChange}
             />
           </Grid>
         </Grid>
-        <Box sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}>
-          <Button onClick={handleClose} sx={{ mr: 1 }}>
+        <Box
+          sx={{ mt: 3, display: "flex", justifyContent: "flex-end", gap: 1 }}
+        >
+          <Button onClick={handleClose} color="secondary">
             Cancel
           </Button>
-          <Button type="submit" color="warning" variant="contained">
-            Save Address
+          <Button
+            type="submit"
+            variant="contained"
+            color="warning"
+            disabled={loading}
+            startIcon={loading ? <CircularProgress size={20} /> : null}
+          >
+            {isEditMode ? "Save Changes" : "Save Address"}
           </Button>
         </Box>
       </Box>
