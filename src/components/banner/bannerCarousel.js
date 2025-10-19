@@ -59,6 +59,8 @@ function BannerCarousel() {
             fill
             sizes="(max-width: 900px) 100vw, 50vw"
             style={{ objectFit: "cover" }}
+            priority={true}
+            loading="eager"
           />
           <Box sx={overlayStyles}>
             <Typography variant="h4" aria-level="2">
