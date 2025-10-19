@@ -28,6 +28,7 @@ function GuestActions() {
         href="/login"
         color="inherit"
         sx={{ display: { xs: "inline-flex", md: "none" } }}
+        aria-label="Go to login page"
       >
         <Avatar sx={{ bgcolor: "warning.main" }}></Avatar>
       </IconButton>

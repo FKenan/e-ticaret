@@ -39,7 +39,7 @@ export default function Navbar() {
       sx={{ bgcolor: "background.paper", color: "text.primary" }}
     >
       <Toolbar sx={{ justifyContent: "space-between" }}>
-        <Link href="/" passHref>
+        <Link href="/" passHref aria-label="Go to homepage">
           <Typography
             variant="h6"
             noWrap
@@ -61,7 +61,11 @@ export default function Navbar() {
         </Box>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <IconButton onClick={() => dispatch(toggleTheme())} color="inherit">
+          <IconButton
+            onClick={() => dispatch(toggleTheme())}
+            color="inherit"
+            aria-label="toggle light/dark theme"
+          >
             {isClient && mode === "dark" ? (
               <Brightness7Icon />
             ) : (

@@ -23,6 +23,8 @@ function AddressCard({ address, onEdit }) {
     <Grid size={{ xs: 12, sm: 6, md: 4 }}>
       <Card
         variant="outlined"
+        role="region"
+        aria-label={`Address in ${address.city}, ${address.district}`}
         sx={{
           height: "100%",
           display: "flex",
@@ -39,10 +41,17 @@ function AddressCard({ address, onEdit }) {
           </Typography>
         </CardContent>
         <Box sx={{ p: 1, display: "flex", justifyContent: "flex-end" }}>
-          <IconButton aria-label="edit" onClick={() => onEdit(address)}>
+          <IconButton
+            aria-label={`Edit address at ${address.city}, ${address.district}`}
+            onClick={() => onEdit(address)}
+          >
             <EditIcon />
           </IconButton>
-          <IconButton aria-label="delete" onClick={handleDelete}>
+
+          <IconButton
+            aria-label={`Delete address at ${address.city}, ${address.district}`}
+            onClick={handleDelete}
+          >
             <DeleteIcon />
           </IconButton>
         </Box>

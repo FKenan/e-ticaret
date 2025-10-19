@@ -52,6 +52,7 @@ export default function CartItem({
             <IconButton
               size="small"
               onClick={() => handleRemoveItem(item.productId, 1)}
+              aria-label={`Decrease quantity of ${item.productName}`}
             >
               <RemoveCircleOutline />
             </IconButton>
@@ -59,6 +60,7 @@ export default function CartItem({
             <IconButton
               size="small"
               onClick={() => handleUpdateQuantity(item.productId, 1)}
+              aria-label={`Increase quantity of ${item.productName}`}
             >
               <AddCircleOutline />
             </IconButton>
@@ -71,7 +73,7 @@ export default function CartItem({
           <IconButton
             size="small"
             onClick={() => handleRemoveItem(item.productId, item.quantity)}
-            title="Remove item"
+            aria-label={`Remove ${item.productName} from cart`}
           >
             <Delete fontSize="small" />
           </IconButton>

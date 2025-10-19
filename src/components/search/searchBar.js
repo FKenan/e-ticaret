@@ -62,9 +62,12 @@ const SearchBar = () => {
   return (
     <Box sx={{ position: "relative" }} ref={searchContainerRef}>
       <TextField
+        id="search-bar"
+        label="Search"
         variant="outlined"
         size="small"
         placeholder="Search..."
+        aria-label="Search products"
         value={query}
         onChange={(e) => {
           setQuery(e.target.value);
@@ -74,16 +77,14 @@ const SearchBar = () => {
             setShowResults(true);
           }
         }}
-        slotProps={{
-          input: {
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton aria-label="search">
-                  <SearchIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          },
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton aria-label="search">
+                <SearchIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
         }}
         sx={{
           width: {

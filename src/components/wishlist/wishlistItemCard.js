@@ -100,7 +100,7 @@ function WishlistItemCard({ item }) {
               : "$--.--"}
           </Typography>
           <IconButton
-            aria-label="remove from wishlist"
+            aria-label={`Remove ${product.name} from wishlist`}
             onClick={handleRemoveFromWishlist}
             color="error"
             sx={{

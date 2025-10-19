@@ -102,7 +102,11 @@ function ProductCard({ product }) {
           title={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
         >
           <IconButton
-            aria-label="add to wishlist"
+            aria-label={
+              isInWishlist
+                ? `Remove ${product.name} from wishlist`
+                : `Add ${product.name} to wishlist`
+            }
             onClick={handleAddToWishlist}
             sx={{
               position: "absolute",
