@@ -8,14 +8,16 @@ function OrderItemList({ items }) {
       <Typography variant="h6" gutterBottom>
         Products
       </Typography>
-      <List disablePadding>
+      <List disablePadding role="list" aria-label="Order items">
         {items.map((item, index) => (
-          <ListItem key={`${item.productId}-${index}`} disableGutters>
-            <ListItemText
-              primary={item.productName}
-              secondary={`Quantity: ${item.quantity}`}
-            />
-          </ListItem>
+          <li key={`${item.productId}-${index}`}>
+            <ListItem disableGutters>
+              <ListItemText
+                primary={item.productName}
+                secondary={`Quantity: ${item.quantity}`}
+              />
+            </ListItem>
+          </li>
         ))}
       </List>
     </>

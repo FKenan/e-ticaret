@@ -128,10 +128,11 @@ export default function ProductDetail({ id }) {
           }}
         >
           <IconButton
-            aria-label="add to wishlist"
+            aria-label={isInWishlist ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
             size="large"
             onClick={handleAddToWishlist}
             color={isInWishlist ? "error" : "default"}
+            aria-pressed={isInWishlist}
           >
             {isInWishlist ? <FavoriteIcon /> : <FavoriteBorderOutlinedIcon />}
           </IconButton>
@@ -141,6 +142,7 @@ export default function ProductDetail({ id }) {
             size="large"
             sx={{ width: { xs: "100%", sm: "auto" }, py: 1.5 }}
             onClick={handleAddToCart}
+            aria-label={`Add ${product.name} to cart`}
           >
             Add to Cart
           </Button>

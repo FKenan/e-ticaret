@@ -24,11 +24,11 @@ const StyledButton = styled(Button)({
 
 export default function NotFound() {
   return (
-    <StyledContainer maxWidth="md">
-      <StyledTypography variant="h1" component="h1" color="warning">
+    <StyledContainer maxWidth="md" role="main" aria-labelledby="error-title">
+      <StyledTypography id="error-title" variant="h1" component="h1" color="warning" role="heading" aria-level="1">
         404
       </StyledTypography>
-      <StyledTypography variant="h4" component="h2" gutterBottom>
+      <StyledTypography variant="h4" component="h2" gutterBottom role="heading" aria-level="2">
         Page Not Found
       </StyledTypography>
       <StyledTypography variant="body1">
@@ -39,6 +39,7 @@ export default function NotFound() {
         color="warning"
         component={Link}
         href="/"
+        aria-label="Return to homepage"
       >
         Go to Homepage
       </StyledButton>

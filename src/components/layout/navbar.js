@@ -37,6 +37,9 @@ export default function Navbar() {
     <AppBar
       position="sticky"
       sx={{ bgcolor: "background.paper", color: "text.primary" }}
+      component="nav"
+      role="navigation"
+      aria-label="Main navigation"
     >
       <Toolbar sx={{ justifyContent: "space-between" }}>
         <Link href="/" passHref aria-label="Go to homepage">
@@ -45,6 +48,8 @@ export default function Navbar() {
             noWrap
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
+            role="heading"
+            aria-level="1"
           >
             E-Commerce
           </Typography>

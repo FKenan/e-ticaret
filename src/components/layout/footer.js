@@ -41,6 +41,9 @@ export default function Footer() {
     >
       <Divider />
       <BottomNavigation
+        component="nav"
+        role="navigation"
+        aria-label="Main navigation"
         showLabels
         value={value}
         onChange={(event, newValue) => {

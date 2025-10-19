@@ -43,12 +43,17 @@ function BannerCarousel() {
       autoPlay
       showThumbs={false}
       interval={5000}
+      aria-label="Product showcase carousel"
+      role="region"
     >
       {items.map((item, i) => (
         <Paper
           key={item.name}
           elevation={0}
           sx={{ height: "400px", position: "relative" }}
+          role="tabpanel"
+          aria-roledescription="slide"
+          aria-label={`Slide ${i + 1} of ${items.length}`}
         >
           <Image
             src={item.image}
@@ -58,7 +63,9 @@ function BannerCarousel() {
             style={{ objectFit: "cover" }}
           />
           <Box sx={overlayStyles}>
-            <Typography variant="h4">{item.name}</Typography>
+            <Typography variant="h4" role="heading" aria-level="2">
+              {item.name}
+            </Typography>
             <Typography variant="body1">{item.description}</Typography>
           </Box>
         </Paper>

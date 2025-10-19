@@ -115,9 +115,13 @@ export default function ProfilePage() {
               Account Management
             </Typography>
             <Divider sx={{ mb: 1 }} />
-            <List>
+            <List
+              role="navigation"
+              aria-label="Profile navigation menu"
+              component="nav"
+            >
               {menuItems.map((item) => (
-                <ListItem key={item.text} disablePadding>
+                <ListItem key={item.text} disablePadding component="li">
                   <ListItemButton component={Link} href={item.href}>
                     <ListItemIcon>{item.icon}</ListItemIcon>
                     <ListItemText primary={item.text} />
