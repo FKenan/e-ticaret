@@ -11,7 +11,7 @@ import {
 import { toggleTheme } from "@/store/slices/themeSlice";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { selectCartItems } from "@/store/slices/cartSlice";
+import { selectCartItems, fetchCart } from "@/store/slices/cartSlice";
 import GuestActions from "./guestActions";
 import AuthActions from "./authActions";
 
@@ -26,6 +26,12 @@ export default function Navbar() {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  useEffect(() => {
+    if (isClient && isAuthenticated && userInfo?.id && cartItems.length === 0) {
+      dispatch(fetchCart(userInfo.id));
+    }
+  }, [isClient, isAuthenticated, userInfo, cartItems.length, dispatch]);
 
   return (
     <AppBar

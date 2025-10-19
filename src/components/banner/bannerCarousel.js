@@ -54,8 +54,8 @@ function BannerCarousel() {
             src={item.image}
             alt={item.name}
             fill
+            sizes="(max-width: 900px) 100vw, 50vw"
             style={{ objectFit: "cover" }}
-            priority={i === 0}
           />
           <Box sx={overlayStyles}>
             <Typography variant="h4">{item.name}</Typography>
