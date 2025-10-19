@@ -63,24 +63,32 @@ export default function Footer() {
           href="/"
           label="Home"
           icon={<HomeOutlined sx={{ fontSize: 30 }} />}
+          aria-label="Go to homepage"
+          aria-current={pathname === "/" ? "page" : undefined}
         />
         <BottomNavigationAction
           component={Link}
           href="/categories"
           label="Categories"
           icon={<CategoryOutlined sx={{ fontSize: 30 }} />}
+          aria-label="Browse product categories"
+          aria-current={pathname.startsWith("/categories") ? "page" : undefined}
         />
         <BottomNavigationAction
           component={Link}
           href="/cart"
           label="Cart"
           icon={<ShoppingCartOutlined sx={{ fontSize: 30 }} />}
+          aria-label="View shopping cart"
+          aria-current={pathname.startsWith("/cart") ? "page" : undefined}
         />
         <BottomNavigationAction
           component={Link}
           href="/profile"
           label="Profile"
           icon={<PersonOutline sx={{ fontSize: 30 }} />}
+          aria-label="View user profile"
+          aria-current={pathname.startsWith("/profile") ? "page" : undefined}
         />
       </BottomNavigation>
     </Box>

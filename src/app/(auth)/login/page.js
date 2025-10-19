@@ -54,7 +54,13 @@ export default function LoginPage() {
         <Typography component="p" variant="h5" sx={{ mt: 1 }}>
           Please login to your account
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        <Box 
+          component="form" 
+          onSubmit={handleSubmit} 
+          sx={{ mt: 1 }}
+          aria-label="Login form"
+          noValidate
+        >
           <TextField
             margin="normal"
             required
@@ -66,6 +72,10 @@ export default function LoginPage() {
             autoFocus
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            inputProps={{
+              'aria-label': 'Email address',
+              'aria-required': 'true'
+            }}
             slotProps={{
               input: {
                 endAdornment: (

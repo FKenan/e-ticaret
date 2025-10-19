@@ -251,9 +251,9 @@ export default function CheckoutPage() {
             <Typography variant="h6" gutterBottom>
               Order Summary
             </Typography>
-            <List disablePadding>
+            <List disablePadding component="ul" aria-label="Order summary items">
               {cartItems.map((item) => (
-                <ListItem key={item.productId} sx={{ py: 1, px: 0 }}>
+                <ListItem key={item.productId} sx={{ py: 1, px: 0 }} component="li">
                   <ListItemText
                     primary={item.productName}
                     secondary={`Quantity: ${item.quantity}`}

@@ -52,7 +52,7 @@ export default function AddAddressModal({ open, handleClose, addressToEdit }) {
         fullAddress: "",
       });
     }
-  }, [addressToEdit, open]);
+  }, [addressToEdit, isEditMode, open]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -82,10 +82,26 @@ export default function AddAddressModal({ open, handleClose, addressToEdit }) {
       open={open}
       onClose={handleClose}
       aria-labelledby="address-modal-title"
+      aria-describedby="address-modal-description"
     >
-      <Box sx={style} component="form" onSubmit={handleSubmit}>
+      <Box
+        sx={style}
+        component="form"
+        onSubmit={handleSubmit}
+        role="dialog"
+        aria-modal="true"
+      >
         <Typography id="address-modal-title" variant="h6" component="h2">
           {isEditMode ? "Edit Address" : "Add New Address"}
+        </Typography>
+        <Typography
+          id="address-modal-description"
+          sx={{ mt: 2 }}
+          className="sr-only"
+        >
+          {isEditMode
+            ? "Edit your existing address details below"
+            : "Fill in your address details below"}
         </Typography>
         <Grid container spacing={2} sx={{ mt: 2 }}>
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -95,6 +111,10 @@ export default function AddAddressModal({ open, handleClose, addressToEdit }) {
               variant="outlined"
               fullWidth
               required
+              inputProps={{
+                "aria-label": "City",
+                "aria-required": "true",
+              }}
               value={formData.city}
               onChange={handleChange}
             />

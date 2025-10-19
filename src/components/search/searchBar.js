@@ -111,14 +111,15 @@ const SearchBar = () => {
             </Box>
           )}
           {!loading && results.length > 0 && (
-            <List role="listbox" aria-label="Search results">
-              {results.map((product) => (
-                <li key={product.id}>
+            <List role="listbox" aria-label="Search results" component="ul">
+              {results.map((product, index) => (
+                <li key={product.id} role="option" aria-selected="false">
                   <ListItemButton
                     component={Link}
                     href={`/products/${product.id}`}
                     onClick={handleResultClick}
-                    role="option"
+                    aria-posinset={index + 1}
+                    aria-setsize={results.length}
                   >
                     <ListItemText primary={product.name} />
                   </ListItemButton>
